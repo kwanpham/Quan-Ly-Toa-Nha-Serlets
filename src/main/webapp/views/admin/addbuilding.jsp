@@ -22,8 +22,8 @@
                 <select class="form-control" id="district" name="district" value="${model.district}">
                     <c:if test="${empty model.name}">
                         <option value="">Chọn quận</option>
-                        <c:forEach var="item" items="${categories}">
-                            <option value="${item.code}">${item.name}</option>
+                        <c:forEach var="item" items="${districts}">
+                            <option value="${item.districtId}">${item.name}</option>
                         </c:forEach>
                     </c:if>
                 </select>
@@ -190,22 +190,14 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Loại sản phẩm</label>
             <div class="col-sm-11">
-                <div class="form-check">
-                    <label class="form-check-label" for="check1">
-                        <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" >Tầng trệt
-                    </label>
-                </div>
+                <c:forEach var="item" items="${buildingtypes}">
+                    <div class="form-check">
+                        <label class="form-check-label" for="check1">
+                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="${item.buildingTypeId}" >${item.name}
+                        </label>
+                    </div>
+                </c:forEach>
 
-                <div class="form-check">
-                    <label class="form-check-label" for="check1">
-                        <input type="checkbox" class="form-check-input" id="check13" name="option1" value="something" >Nguyên căn
-                    </label>
-                </div>
-                <div class="form-check">
-                    <label class="form-check-label" for="check1">
-                        <input type="checkbox" class="form-check-input" id="check14" name="option1" value="something" >Nội thất
-                    </label>
-                </div>
             </div>
         </div>
 

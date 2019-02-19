@@ -19,9 +19,9 @@ public class DistrictDAO extends AbsstractDAO<DistrictModel> implements IDistric
     }
 
     @Override
-    public List<DistrictModel> findByBuildingId(Long buildingId) {
+    public DistrictModel findByBuildingId(Long buildingId) {
         String sql = "SELECT * FROM district WHERE roleid = ?";
-        return query(sql, new DistrictMapper(), buildingId);
+        return query(sql, new DistrictMapper(), buildingId).get(0);
     }
 
     @Override

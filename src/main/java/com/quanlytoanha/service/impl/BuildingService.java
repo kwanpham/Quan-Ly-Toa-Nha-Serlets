@@ -1,7 +1,7 @@
 package com.quanlytoanha.service.impl;
 
-import com.quanlytoanha.dao.IBuildingDAO;
-import com.quanlytoanha.model.BuildingModel;
+import com.quanlytoanha.dao.*;
+import com.quanlytoanha.model.*;
 import com.quanlytoanha.paging.Pageble;
 import com.quanlytoanha.service.IBuildingService;
 
@@ -13,6 +13,18 @@ public class BuildingService implements IBuildingService {
 
     @Inject
     private IBuildingDAO buildingDAO;
+
+    @Inject
+    IDistrictDAO districtDAO;
+
+    @Inject
+    IDetailUserBuildingDAO detailUserBuildingDAO;
+
+    @Inject
+    IDetailBuildingTypeDAO detailBuildingTypeDAO;
+
+    @Inject
+    IBuildingTypeDAO buildingTypeDAO;
 
     @Override
     public BuildingModel save(BuildingModel buildingModel) {
@@ -54,5 +66,30 @@ public class BuildingService implements IBuildingService {
     @Override
     public List<BuildingModel> findAll(Pageble pageble) {
         return buildingDAO.findAll(pageble);
+    }
+
+    @Override
+    public List<DistrictModel> findAllDistrict() {
+        return districtDAO.findAll();
+    }
+
+    @Override
+    public DistrictModel findByBuildingId(long id) {
+        return districtDAO.findByBuildingId(id);
+    }
+
+    @Override
+    public long save(DetailBuildingTypeModel model) {
+        return detailBuildingTypeDAO.save(model);
+    }
+
+    @Override
+    public List<BuildingTypeModel> findAllBuildingType() {
+        return buildingTypeDAO.findAll();
+    }
+
+    @Override
+    public long save(DetailUserBuildingModel model) {
+        return detailUserBuildingDAO.save(model);
     }
 }

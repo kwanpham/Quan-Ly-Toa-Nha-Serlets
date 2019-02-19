@@ -35,7 +35,7 @@
                                         <a flag="info"
                                            class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
                                            data-toggle="tooltip"
-                                           title='Thêm tòa nhà' href='<c:url value="/admin-add-building?type=edit"/>'>
+                                           title='Thêm tòa nhà' href='<c:url value="/admin-building?type=edit"/>'>
 															<span>
 																<i class="fa fa-plus-circle bigger-110 purple"></i>
 															</span>

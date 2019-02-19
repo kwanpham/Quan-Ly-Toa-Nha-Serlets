@@ -8,9 +8,7 @@ import com.quanlytoanha.model.UserModel;
 
 import java.util.List;
 
-/**
- * Created by MyPC on 18/02/2019.
- */
+
 public class BuildingTypeDAO extends AbsstractDAO<BuildingTypeModel> implements IBuildingTypeDAO {
     @Override
     public BuildingTypeModel findOne(Long id) {

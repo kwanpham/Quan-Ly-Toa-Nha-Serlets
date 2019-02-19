@@ -6,9 +6,7 @@ import org.testng.annotations.Test;
 
 import java.sql.Timestamp;
 
-/**
- * Created by MyPC on 18/02/2019.
- */
+
 public class TestDAO {
 
     @Test
@@ -18,7 +16,7 @@ public class TestDAO {
         detailBuildingTypeModel.setBuildingId(3);
         detailBuildingTypeModel.setBuildingTypeId(2);
         detailBuildingTypeModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        long check = detailBuildingTypeDAO.insert(detailBuildingTypeModel);
+        long check = detailBuildingTypeDAO.save(detailBuildingTypeModel);
         System.out.println(check + "");
 
     }

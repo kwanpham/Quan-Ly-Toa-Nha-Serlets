@@ -64,4 +64,10 @@ public class UserDAO extends AbsstractDAO<UserModel> implements IUserDAO {
         String sql = "select * from user where username = ? , password = ? , status = ? ";
         return  query(sql , new UserMapper() , userName , password ,status).get(0);
     }
+
+    @Override
+    public List<UserModel> findByMangerId(long managerId) {
+        String sql = "SELECT * FROM user where mangerId = ? " ;
+        return query(sql , new UserMapper() , managerId);
+    }
 }

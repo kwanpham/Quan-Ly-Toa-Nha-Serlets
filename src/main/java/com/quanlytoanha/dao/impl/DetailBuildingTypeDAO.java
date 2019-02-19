@@ -7,7 +7,7 @@ import com.quanlytoanha.model.DetailBuildingTypeModel;
 
 public class DetailBuildingTypeDAO extends AbsstractDAO<DetailBuildingTypeModel> implements IDetailBuildingTypeDAO {
 
-    public long insert(DetailBuildingTypeModel detailBuildingTypeModel) {
+    public long save(DetailBuildingTypeModel detailBuildingTypeModel) {
         String sql = autoWriteInsertSQL("DetailBuildingType");
         return insert(sql , detailBuildingTypeModel.getBuildingId() ,detailBuildingTypeModel.getBuildingTypeId() ,
                 detailBuildingTypeModel.getCreatedDate() , detailBuildingTypeModel.getModifiedDate() ,
