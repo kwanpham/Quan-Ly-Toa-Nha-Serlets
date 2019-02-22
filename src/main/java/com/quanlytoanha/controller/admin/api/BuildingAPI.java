@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.Type;
 import com.quanlytoanha.model.BuildingModel;
 import com.quanlytoanha.service.IBuildingService;
+import com.quanlytoanha.service.impl.BuildingService;
 import com.quanlytoanha.utils.HttpUtil;
 
 
@@ -18,8 +19,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/api-admin-building"})
 public class BuildingAPI extends HttpServlet {
 
-    @Inject
-    private IBuildingService buildingService;
+    private IBuildingService buildingService = new BuildingService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,8 +27,10 @@ public class BuildingAPI extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         BuildingModel buildingModel = HttpUtil.of(request.getReader()).toModel(BuildingModel.class);
+
         buildingModel = buildingService.save(buildingModel);
         objectMapper.writeValue(response.getOutputStream() , buildingModel);
+
     }
 
     @Override

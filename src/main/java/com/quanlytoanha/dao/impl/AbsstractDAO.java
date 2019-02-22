@@ -53,7 +53,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
             }
             return results;
         } catch (SQLException e) {
-            System.out.printf(e.getMessage());
+            e.printStackTrace();
             return null;
         } finally {
             try {
@@ -206,7 +206,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
                 }
             }
 
-            System.out.println(parameters.length + " //// " );
+            System.out.println("parameters length at setpareameter() : " +parameters.length   );
         } catch (SQLException e) {
             e.printStackTrace();
         }

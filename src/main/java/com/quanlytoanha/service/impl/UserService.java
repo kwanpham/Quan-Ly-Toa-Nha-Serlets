@@ -1,6 +1,7 @@
 package com.quanlytoanha.service.impl;
 
 import com.quanlytoanha.dao.IUserDAO;
+import com.quanlytoanha.dao.impl.UserDAO;
 import com.quanlytoanha.model.UserModel;
 import com.quanlytoanha.service.IUserService;
 
@@ -9,8 +10,12 @@ import java.util.List;
 
 public class UserService implements IUserService {
 
-    @Inject
+
     private IUserDAO userDAO;
+
+    public UserService() {
+        userDAO = new UserDAO();
+    }
 
     @Override
     public UserModel findByUserNameAndPasswordAndStatus(String userName, String password, int status) {

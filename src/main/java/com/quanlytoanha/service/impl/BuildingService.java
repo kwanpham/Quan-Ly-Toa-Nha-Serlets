@@ -1,6 +1,7 @@
 package com.quanlytoanha.service.impl;
 
 import com.quanlytoanha.dao.*;
+import com.quanlytoanha.dao.impl.*;
 import com.quanlytoanha.model.*;
 import com.quanlytoanha.paging.Pageble;
 import com.quanlytoanha.service.IBuildingService;
@@ -9,22 +10,23 @@ import javax.inject.Inject;
 import java.sql.Timestamp;
 import java.util.List;
 
+
 public class BuildingService implements IBuildingService {
 
-    @Inject
+
     private IBuildingDAO buildingDAO;
+    private IDetailUserBuildingDAO detailUserBuildingDAO;
+    private IDetailBuildingTypeDAO detailBuildingTypeDAO;
+    private IBuildingTypeDAO buildingTypeDAO;
+    private IDistrictDAO districtDAO;
 
-    @Inject
-    IDistrictDAO districtDAO;
-
-    @Inject
-    IDetailUserBuildingDAO detailUserBuildingDAO;
-
-    @Inject
-    IDetailBuildingTypeDAO detailBuildingTypeDAO;
-
-    @Inject
-    IBuildingTypeDAO buildingTypeDAO;
+    public BuildingService() {
+        buildingDAO = new BuildingDAO();
+        detailUserBuildingDAO = new DetailUserBuidingDAO();
+        detailBuildingTypeDAO = new DetailBuildingTypeDAO();
+        buildingTypeDAO = new BuildingTypeDAO();
+        districtDAO = new DistrictDAO();
+    }
 
     @Override
     public BuildingModel save(BuildingModel buildingModel) {
@@ -70,6 +72,7 @@ public class BuildingService implements IBuildingService {
 
     @Override
     public List<DistrictModel> findAllDistrict() {
+        DistrictDAO districtDAO = new DistrictDAO();
         return districtDAO.findAll();
     }
 

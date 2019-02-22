@@ -21,7 +21,7 @@ public class BuildingMapper implements RowMapper<BuildingModel> {
             buildingModel.setBuildingArea(rs.getDouble("buildingArea"));
             buildingModel.setDirection(rs.getString("direction"));
             buildingModel.setLevelBuilding(rs.getString("levelBuilding"));
-            buildingModel.setRentArea(rs.getDouble("rentArea"));
+            buildingModel.setRentArea(rs.getString("rentArea"));
             buildingModel.setAreaDescription(rs.getString("areaDescription"));
             buildingModel.setCostRent(rs.getDouble("costRent"));
             buildingModel.setCostDescription(rs.getString("costDescription"));

@@ -1,6 +1,7 @@
 package com.quanlytoanha.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BuildingModel extends AbstractModel<BuildingModel> {
@@ -15,7 +16,7 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     private double buildingArea;
     private String direction;
     private String levelBuilding;
-    private double rentArea;
+    private String rentArea;
     private String areaDescription;
     private double costRent;
     private String costDescription;
@@ -37,9 +38,8 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     private String imageName;
     private String thumbnailBase64;
     private Integer status;
-    private List<BuildingModel> buildingModels ;
+    private List<BuildingTypeModel> buildingTypes = new ArrayList<>();
     private List<UserModel> userModels;
-
 
 
     public long getBuildingId() {
@@ -62,16 +62,8 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         return districtId;
     }
 
-    public void setDistrictId(int district) {
-        this.districtId = district;
-    }
-
-    public String getStructure() {
-        return structure;
-    }
-
-    public void setStructure(String structure) {
-        this.structure = structure;
+    public void setDistrictId(int districtId) {
+        this.districtId = districtId;
     }
 
     public String getWard() {
@@ -88,6 +80,14 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getStructure() {
+        return structure;
+    }
+
+    public void setStructure(String structure) {
+        this.structure = structure;
     }
 
     public int getNumberOfBasement() {
@@ -122,11 +122,11 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.levelBuilding = levelBuilding;
     }
 
-    public double getRentArea() {
+    public String getRentArea() {
         return rentArea;
     }
 
-    public void setRentArea(double rentArea) {
+    public void setRentArea(String rentArea) {
         this.rentArea = rentArea;
     }
 
@@ -290,11 +290,27 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.thumbnailBase64 = thumbnailBase64;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public List<BuildingTypeModel> getBuildingTypes() {
+        return buildingTypes;
+    }
+
+    public void setBuildingTypes(List<BuildingTypeModel> buildingTypes) {
+        this.buildingTypes = buildingTypes;
+    }
+
+    public List<UserModel> getUserModels() {
+        return userModels;
+    }
+
+    public void setUserModels(List<UserModel> userModels) {
+        this.userModels = userModels;
     }
 }

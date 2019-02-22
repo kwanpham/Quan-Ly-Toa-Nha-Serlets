@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/common/taglib.jsp"%>
+<%@include file="/common/taglib.jsp" %>
 <c:url var="APIurl" value="/api-admin-building"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -10,7 +10,7 @@
 <div class="main-content">
     <h2>Thêm sản phẩm</h2>
     <form action="" id="formSubmit">
-        <div class="form-group" >
+        <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Tên sản phẩm</label>
             <div class="col-sm-11">
                 <input type="text" class="form-control" id="name" name="name" value="${model.name}"/>
@@ -48,14 +48,16 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Số tầng hầm</label>
             <div class="col-sm-11">
-                <input type="number" class="form-control" id="numberOfBasement" name="numberOfBasement" value="${model.numberOfBasement}"/>
+                <input type="number" class="form-control" id="numberOfBasement" name="numberOfBasement"
+                       value="${model.numberOfBasement}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Diện tích sàn</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="buildingArea" name="buildingArea" value="${model.buildingArea}"/>
+                <input type="number" class="form-control" id="buildingArea" name="buildingArea"
+                       value="${model.buildingArea}"/>
             </div>
         </div>
 
@@ -70,7 +72,7 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Hạng</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="leve" name="level value="${model.level}"/>
+                <input type="text" class="form-control" id="leve" name="level" value="${model.level}"/>
             </div>
         </div>
 
@@ -85,105 +87,115 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Mô tả S</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="areaDescription" name="areaDescription" value="${model.areaDescription}"/>
+                <input type="text" class="form-control" id="areaDescription" name="areaDescription"
+                       value="${model.areaDescription}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Giá thuê</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="costRent" name="costRent" value="${model.costRent}"/>
+                <input type="number" class="form-control" id="costRent" name="costRent" value="${model.costRent}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Mô tả giá</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="costDescription" name="costDescription" value="${model.costDescription}"/>
+                <input type="text" class="form-control" id="costDescription" name="costDescription"
+                       value="${model.costDescription}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Phí dịch vụ</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="serviceCost" name="serviceCost" value="${model.serviceCost}"/>
+                <input type="number" class="form-control" id="serviceCost" name="serviceCost"
+                       value="${model.serviceCost}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Phí ô tô</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="carCost" name="carCost" value="${model.carCost}"/>
+                <input type="number" class="form-control" id="carCost" name="carCost" value="${model.carCost}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Phí xe máy</label>
             <div class="col-sm-11">
-                <input type="number" class="form-control" id="motorbikeCost" name="motorbikeCost" value="${model.motorbikeCost}"/>
+                <input type="number" class="form-control" id="motorbikeCost" name="motorbikeCost"
+                       value="${model.motorbikeCost}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Phí ngoài giờ</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="overtimeCost" name="overtimeCost" value="${model.overtimeCost}"/>
+                <input type="number" class="form-control" id="overtimeCost" name="overtimeCost"
+                       value="${model.overtimeCost}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Tiền điện</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="electricityCost" name="electricityCost" value="${model.electricityCost}"/>
+                <input type="number" class="form-control" id="electricityCost" name="electricityCost"
+                       value="${model.electricityCost}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Đặt cọc</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="deposit" name="deposit" value="${model.deposit}"/>
+                <input type="number" class="form-control" id="deposit" name="deposit" value="${model.deposit}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Thanh toán</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="paymanet" name="paymanet" value="${model.paymanet}"/>
+                <input type="number" class="form-control" id="payment" name="payment" value="${model.payment}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Thời han thuê</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="timeConstract" name="timeConstract" value="${model.timeConstract}"/>
+                <input type="text" class="form-control" id="timeConstract" name="timeConstract"
+                       value="${model.timeConstract}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Time trang trí</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="timeDecorator" name="timeDecorator" value="${model.timeDecorator}"/>
+                <input type="text" class="form-control" id="timeDecorator" name="timeDecorator"
+                       value="${model.timeDecorator}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Tên quản lý</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="managerName" name="managerName" value="${model.managerName}"/>
+                <input type="text" class="form-control" id="managerName" name="managerName"
+                       value="${model.managerName}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">SĐT quản lý</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="mamagerPhone" name="mamagerPhone" value="${model.mamagerPhone}"/>
+                <input type="text" class="form-control" id="mamagerPhone" name="mamagerPhone"
+                       value="${model.mamagerPhone}"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Phí môi giới</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="commission" name="commission" value="${model.commission}"/>
+                <input type="number" class="form-control" id="commission" name="commission" value="${model.commission}"/>
             </div>
         </div>
 
@@ -192,15 +204,15 @@
             <div class="col-sm-11">
                 <c:forEach var="item" items="${buildingtypes}">
                     <div class="form-check">
-                        <label class="form-check-label" for="check1">
-                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="${item.buildingTypeId}" >${item.name}
-                        </label>
+
+                            <input type="checkbox" class="form-check-input"  name="buildingTypes"
+                                   value="${item.buildingTypeId}">${item.name}
+
                     </div>
                 </c:forEach>
 
             </div>
         </div>
-
 
 
         <div class="form-group">
@@ -232,63 +244,76 @@
         </div>
 
         <%--<div class="form-group">--%>
-            <%--<label class="col-sm-1 control-label no-padding-right">Ảnh 64</label>--%>
-            <%--<div class="col-sm-11">--%>
-                <%--<input type="text" class="form-control" id="thumbnailBase64" name="thumbnailBase64" value="${model.thumbnailBase64}"/>--%>
-            <%--</div>--%>
+        <%--<label class="col-sm-1 control-label no-padding-right">Ảnh 64</label>--%>
+        <%--<div class="col-sm-11">--%>
+        <%--<input type="text" class="form-control" id="thumbnailBase64" name="thumbnailBase64" value="${model.thumbnailBase64}"/>--%>
+        <%--</div>--%>
         <%--</div>--%>
 
-        <button type="button" id="#btnAddOrUpdate" class="btn btn-primary">Submit</button>
+        <button type="button" id="btnAddOrUpdate" class="btn btn-primary">Submit</button>
     </form>
 
-    <script>
-        $('#btnAddOrUpdate').click(function (e) {
-            e.preventDefault();
-            var data = {};
-            var formData = $('#formSubmit').serializeArray();
-            $.each(formData, function (i, v) {
-                data[""+v.name+""] = v.value;
-            });
-            var id = $('#id').val();
-            if (id == "") {
-                addNew(data);
-            } else {
-                updateNew(data);
-            }
+
+</div>
+<script>
+
+
+    $('#btnAddOrUpdate').click(function (e) {
+
+
+        e.preventDefault();    //ngắn chặn hành động mặc định của sự kiện
+        var checkBoxValue = [];
+        var data = {};
+        var formData = $('#formSubmit').serializeArray();
+        $.each(formData, function (i, v) {
+            data["" + v.name + ""] = v.value;
         });
 
-        function addNew(data) {
-            $.ajax({
-                url: '${APIurl}',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                dataType: 'json',
-                success: function (result) {
-                    console.log(result);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        }
-        function updateNew(data) {
-            $.ajax({
-                url: '${APIurl}',
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                dataType: 'json',
-                success: function (result) {
-                    console.log(result);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        }
+        $("input:checkbox[name=buildingTypes]:checked").each(function () {
+            checkBoxValue.push($(this).val());
+        });
 
-    </script>
-</div>
+        data["buildingTypes"] = checkBoxValue;
+
+
+        console.log(data);
+
+            addNew(data);
+        
+    });
+
+    function addNew(data) {
+        $.ajax({
+            url: '${APIurl}',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    function updateNew(data) {
+        $.ajax({
+            url: '${APIurl}',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+</script>
+
 </body>
 </html>

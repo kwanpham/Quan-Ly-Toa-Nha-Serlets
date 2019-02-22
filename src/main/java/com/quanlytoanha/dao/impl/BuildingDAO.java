@@ -12,12 +12,14 @@ public class BuildingDAO extends AbsstractDAO<BuildingModel> implements IBuildin
 
     @Override
     public Long save(BuildingModel buildingModel) {
-        String sql = " insert into  building (  name , districtId , ward , street , structure , numberOfBasement , buildingArea ," +
-                " direction , levelBuilding , rentArea , areaDescription , costRent , costDescription , serviceCost , carCost ," +
-                " motorbikeCost , overtimeCost , electricityCost , deposit , payment , timeContract , timeDecorator , managerName ," +
-                " mamagerPhone , commission , note , link , location , imageName , thumbnailBase64 , createdDate , modifiedDate ," +
-                " createdBy , modifiedBy , status  )" +
-                " values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )  ";
+//        String sql = " insert into  building (  name , districtId , ward , street , structure , numberOfBasement , buildingArea ," +
+//                " direction , levelBuilding , rentArea , areaDescription , costRent , costDescription , serviceCost , carCost ," +
+//                " motorbikeCost , overtimeCost , electricityCost , deposit , payment , timeContract , timeDecorator , managerName ," +
+//                " mamagerPhone , commission , note , link , location , imageName , thumbnailBase64 , createdDate , modifiedDate ," +
+//                " createdBy , modifiedBy , status  )" +
+//                " values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )  ";
+
+        String sql = autoWriteInsertSQL("building");
 
         return insert(sql, buildingModel.getName(), buildingModel.getDistrictId(), buildingModel.getWard(), buildingModel.getStreet(),
                 buildingModel.getStructure(), buildingModel.getNumberOfBasement(), buildingModel.getBuildingArea(), buildingModel.getDirection(),
@@ -35,12 +37,14 @@ public class BuildingDAO extends AbsstractDAO<BuildingModel> implements IBuildin
 
     @Override
     public void update(BuildingModel buildingModel) {
-        String sql = "update  building set name = ? , districtId = ? , ward = ? , street = ? , structure = ? , numberOfBasement = ? ," +
-                " buildingArea = ? , direction = ? , levelBuilding = ? , rentArea = ? , areaDescription = ? , costRent = ? ," +
-                " costDescription = ? , serviceCost = ? , carCost = ? , motorbikeCost = ? , overtimeCost = ? , electricityCost = ? ," +
-                " deposit = ? , payment = ? , timeContract = ? , timeDecorator = ? , managerName = ? , mamagerPhone = ? , commission = ? ," +
-                " note = ? , link = ? , location = ? , imageName = ? , thumbnailBase64 = ? , createdDate = ? , modifiedDate = ? ," +
-                " createdBy = ? , modifiedBy = ? , status = ?   where buildingId = ? ";
+//        String sql = "update  building set name = ? , districtId = ? , ward = ? , street = ? , structure = ? , numberOfBasement = ? ," +
+//                " buildingArea = ? , direction = ? , levelBuilding = ? , rentArea = ? , areaDescription = ? , costRent = ? ," +
+//                " costDescription = ? , serviceCost = ? , carCost = ? , motorbikeCost = ? , overtimeCost = ? , electricityCost = ? ," +
+//                " deposit = ? , payment = ? , timeContract = ? , timeDecorator = ? , managerName = ? , mamagerPhone = ? , commission = ? ," +
+//                " note = ? , link = ? , location = ? , imageName = ? , thumbnailBase64 = ? , createdDate = ? , modifiedDate = ? ," +
+//                " createdBy = ? , modifiedBy = ? , status = ?   where buildingId = ? ";
+
+        String sql = autoWriteUpdateSQL("building");
 
 
         update(sql, buildingModel.getName(), buildingModel.getDistrictId(), buildingModel.getWard(), buildingModel.getStreet(),
