@@ -22,8 +22,6 @@ public class AbstractModel<T> {
     private String message;
     private String type;
 
-
-
     public Timestamp getCreatedDate() {
         return createdDate;
     }
