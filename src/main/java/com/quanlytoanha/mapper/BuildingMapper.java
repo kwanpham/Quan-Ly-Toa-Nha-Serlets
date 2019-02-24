@@ -11,7 +11,7 @@ public class BuildingMapper implements RowMapper<BuildingModel> {
     public BuildingModel mapRow(ResultSet rs) {
         try {
             BuildingModel buildingModel = new BuildingModel();
-            buildingModel.setBuildingId(rs.getLong("id"));
+            buildingModel.setId(rs.getLong("id"));
             buildingModel.setName(rs.getString("name"));
             buildingModel.setDistrictId(rs.getInt("districtId"));
             buildingModel.setWard(rs.getString("ward"));
@@ -23,26 +23,27 @@ public class BuildingMapper implements RowMapper<BuildingModel> {
             buildingModel.setLevelBuilding(rs.getString("levelBuilding"));
             buildingModel.setRentArea(rs.getString("rentArea"));
             buildingModel.setAreaDescription(rs.getString("areaDescription"));
-            buildingModel.setCostRent(rs.getDouble("costRent"));
+            buildingModel.setCostRent(rs.getInt("costRent"));
             buildingModel.setCostDescription(rs.getString("costDescription"));
-            buildingModel.setServiceCost(rs.getDouble("serviceCost"));
-            buildingModel.setCarCost(rs.getDouble("carCost"));
-            buildingModel.setMotorbikeCost(rs.getDouble("motorbikeCost"));
-            buildingModel.setOvertimeCost(rs.getDouble("overtimeCost"));
-            buildingModel.setElectricityCost(rs.getDouble("electricityCost"));
-            buildingModel.setDeposit(rs.getDouble("deposit"));
-            buildingModel.setPayment(rs.getDouble("payment"));
-            buildingModel.setTimeContract(rs.getTimestamp("timeContract"));
-            buildingModel.setTimeDecorator(rs.getTimestamp("timeDecorator"));
+            buildingModel.setServiceCost(rs.getString("serviceCost"));
+            buildingModel.setCarCost(rs.getString("carCost"));
+            buildingModel.setMotorbikeCost(rs.getString("motorbikeCost"));
+            buildingModel.setOvertimeCost(rs.getString("overtimeCost"));
+            buildingModel.setElectricityCost(rs.getString("electricityCost"));
+            buildingModel.setDeposit(rs.getString("deposit"));
+            buildingModel.setPayment(rs.getString("payment"));
+            buildingModel.setTimeContract(rs.getString("timeContract"));
+            buildingModel.setTimeDecorator(rs.getString("timeDecorator"));
             buildingModel.setManagerName(rs.getString("managerName"));
             buildingModel.setMamagerPhone(rs.getString("mamagerPhone"));
-            buildingModel.setCommission(rs.getDouble("commission"));
+            buildingModel.setCommission(rs.getString("commission"));
             buildingModel.setNote(rs.getString("note"));
             buildingModel.setLink(rs.getString("link"));
             buildingModel.setLocation(rs.getString("location"));
             buildingModel.setImageName(rs.getString("imageName"));
             buildingModel.setThumbnailBase64(rs.getString("thumbnailBase64"));
-            buildingModel.setStatus(rs.getInt("status"));
+
+
             buildingModel.setCreatedDate(rs.getTimestamp("createdDate"));
             buildingModel.setModifiedDate(rs.getTimestamp("modifiedDate"));
             buildingModel.setCreatedBy(rs.getString("createdBy"));

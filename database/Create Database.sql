@@ -1,5 +1,5 @@
 CREATE TABLE role (
-  id       BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id           BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name         VARCHAR(255) NOT NULL,
   createdDate  TIMESTAMP    NULL,
   modifiedDate TIMESTAMP    NULL,
@@ -10,23 +10,21 @@ CREATE TABLE role (
 
 
 CREATE TABLE user (
-  id       BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id           BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
   username     VARCHAR(150) NOT NULL,
   password     VARCHAR(150) NOT NULL,
   fullName     VARCHAR(150) NULL,
   roleId       BIGINT       NOT NULL,
-  managerId    BIGINT       NULL,
   createdDate  TIMESTAMP    NULL,
   modifiedDate TIMESTAMP    NULL,
   createdBy    VARCHAR(255) NULL,
   modifiedBy   VARCHAR(255) NULL,
   status       INT          NOT NULL,
-  FOREIGN KEY (managerid) REFERENCES user (userId),
   FOREIGN KEY (roleid) REFERENCES role (id)
 );
 
 CREATE TABLE district (
-  id           INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id           INT          NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name         VARCHAR(255) NOT NULL,
   code         VARCHAR(255) NOT NULL,
   createdDate  TIMESTAMP    NULL,
@@ -37,9 +35,9 @@ CREATE TABLE district (
 
 
 CREATE TABLE building (
-  id               BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id               BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name             VARCHAR(255),
-  district         VARCHAR(255),
+  districtId         VARCHAR(255),
   ward             VARCHAR(255),
   street           VARCHAR(255),
   structure        VARCHAR(255),
@@ -49,7 +47,7 @@ CREATE TABLE building (
   levelBuilding    VARCHAR(255),
   rentArea         TEXT,
   areaDescription  VARCHAR(255),
-  costRent         INTEGER,
+  costRent         INT,
   costDescription  VARCHAR(255),
   serviceCost      VARCHAR(255),
   carCost          VARCHAR(255),
@@ -67,12 +65,13 @@ CREATE TABLE building (
   link             VARCHAR(255),
   location         VARCHAR(255),
   image            VARCHAR(255),
-  type             TEXT NULL,
+  type             TEXT         NULL,
   createdDate      TIMESTAMP    NULL,
   modifiedDate     TIMESTAMP    NULL,
   createdBy        VARCHAR(255) NULL,
-  modifiedBy       VARCHAR(255) NULL,
+  modifiedBy       VARCHAR(255) NULL
 );
+
 
 CREATE TABLE assignment (
   userId       BIGINT       NOT NULL,

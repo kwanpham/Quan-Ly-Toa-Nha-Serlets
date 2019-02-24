@@ -2,11 +2,13 @@ package com.quanlytoanha.dao.impl;
 
 import com.quanlytoanha.dao.GenericDAO;
 import com.quanlytoanha.mapper.RowMapper;
+import com.quanlytoanha.model.AbstractModel;
+import org.apache.commons.lang3.ArrayUtils;
 
+
+import java.lang.reflect.Field;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AbsstractDAO<T> implements GenericDAO<T> {
 
@@ -25,7 +27,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
 //        }
 //    }
 
-    public Connection getConnection() {
+    private Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/quanlytoanha";
@@ -38,7 +40,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
     }
 
     @Override
-    public  List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
+    public List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
         PreparedStatement statement = null;
@@ -52,7 +54,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
                 results.add(rowMapper.mapRow(resultSet));
             }
             return results;
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             e.printStackTrace();
             return null;
         } finally {
@@ -67,13 +69,49 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                return null;
+                System.out.println(e.getMessage());
             }
         }
     }
 
     @Override
-    public void update(String sql, Object... parameters) {
+    public <M extends AbstractModel> void update(String sql, M model) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = getConnection();
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(sql);
+            Object[] parameters = autoGetValueFromModel(model , model.getTableName());
+            parameters = ArrayUtils.add(parameters , model.getId());
+            setParameter(statement, parameters);
+            statement.executeUpdate();
+            connection.commit();
+            System.out.println("Update thanh cong");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    public void delete(String sql , Object... parameters) {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -83,16 +121,14 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
             setParameter(statement, parameters);
             statement.executeUpdate();
             connection.commit();
-            System.out.println("Update thanh cong");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
+            System.out.println("Delete thanh cong");
+        } catch (SQLException e){
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
+            e.printStackTrace();
         } finally {
             try {
                 if (connection != null) {
@@ -108,15 +144,17 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
     }
 
     @Override
-    public long insert(String sql, Object... parameters) {
+    public <M extends AbstractModel> long insert(String sql, M model) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            long id =0;
+            long id = 0;
             connection = getConnection();
+            assert connection != null;
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            Object[] parameters = autoGetValueFromModel(model , model.getTableName());
             setParameter(statement, parameters);
             System.out.println(statement.toString());
             statement.executeUpdate();
@@ -128,13 +166,15 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
             return id;
         } catch (SQLException e) {
             e.printStackTrace();
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (connection != null) {
@@ -182,7 +222,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                return 0;
+                e.printStackTrace();
             }
         }
     }
@@ -206,93 +246,122 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
                 }
             }
 
-            System.out.println("parameters length at setpareameter() : " +parameters.length   );
+            System.out.println("parameters length at setpareameter() : " + parameters.length);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    protected String autoWriteUpdateSQL(String table) {
+    private List<String> getAllColumnName(String table) {
         Connection connection = getConnection();
         try {
-
             PreparedStatement statement = connection.prepareStatement("select *from " + table);
             ResultSet rs = statement.executeQuery();
 
             ResultSetMetaData rsmd = rs.getMetaData();
 
             int count = rsmd.getColumnCount();
-            StringBuilder sql = new StringBuilder("update " + rsmd.getTableName(1) + " set ");
-            for (int i = 2; i <= count; i++) {
 
-                if (i == count) {
-                    sql.append(rsmd.getColumnName(i) + " = ?  ");
-                } else {
-                    sql.append(rsmd.getColumnName(i) + " = ? , ");
-                }
-
+            List<String> listColumNames = new ArrayList<>();
+            for (int i = 1; i <= count; i++) {
+                listColumNames.add(rsmd.getColumnName(i));
 
             }
-            sql.append(" where buildingId = ? ");
-            System.out.println(sql.toString());
-            return sql.toString();
+
+            System.out.println(listColumNames.toString());
+            return listColumNames;
+
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
+
     }
 
-    protected String autoWriteInsertSQL(String table) {
-        Connection connection = getConnection();
-        int start;
-        if (table.toLowerCase().contains("detail")){
-            start=1;
-        }else {
-            start=2;
+    protected String autoWriteUpdateSQL(String tableName) {
+        List<String> listColumnName = getAllColumnName(tableName);
+        int count = listColumnName.size();
+        StringBuilder sql = new StringBuilder("update " + tableName + " set ");
+        for (int i = 1; i < count; i++) {
+            if (i == count-1) {
+                sql.append(listColumnName.get(i) + " = ?  ");
+            } else {
+                sql.append(listColumnName.get(i) + " = ? , ");
+            }
         }
-        try {
-            PreparedStatement statement = connection.prepareStatement("select *from " + table);
-            ResultSet rs = statement.executeQuery();
+        sql.append(" where id = ? ");
+        System.out.println(sql.toString());
+        return sql.toString();
 
-            ResultSetMetaData rsmd = rs.getMetaData();
 
-            int count = rsmd.getColumnCount();
-            System.out.println("Column Count : " + count);
-            StringBuilder sql = new StringBuilder(" insert into " + rsmd.getTableName(1) + " (  ");
-            for (int i = start; i <= count; i++) {
+    }
 
-                if (i == count) {
-                    sql.append(rsmd.getColumnName(i) + " , ");
-                    sql.delete(sql.length() - 2, sql.length());
-                    sql.append(" )");
+    protected String autoWriteInsertSQL(String tableName) {
+
+        List<String> listColumnName = getAllColumnName(tableName);
+        int count = listColumnName.size();
+        StringBuilder sql = new StringBuilder(" insert into " + tableName + " (  ");
+        for (int i = 1; i < count; i++) {
+
+            if (i == count-1) {
+                sql.append(listColumnName.get(i) + " , ");
+                sql.delete(sql.length() - 2, sql.length());
+                sql.append(" )");
+                break;
+            }
+            sql.append(listColumnName.get(i) + " , ");
+        }
+
+        sql.append(" values( ");
+
+
+        for (int i = 1; i < count; i++) {
+
+            if (i == count-1) {
+                sql.append("? ) ");
+            } else {
+                sql.append("?, ");
+            }
+        }
+
+        return sql.toString();
+    }
+
+    private  <M extends AbstractModel> Object[] autoGetValueFromModel(M model, String tableName) throws IllegalArgumentException,
+            IllegalAccessException, NoSuchFieldException, SecurityException {
+
+        Class<M> aClazz = (Class<M>) model.getClass();
+        List<Object> objects = new ArrayList<>();
+        List<String> sqlField = getAllColumnName(tableName);
+
+        Field private_nameFieldChildClass[] = aClazz.getDeclaredFields();
+        Field private_nameFieldSuperClass[] = aClazz.getSuperclass().getDeclaredFields();
+        List<Field> listField = new LinkedList<>(Arrays.asList(private_nameFieldChildClass));
+        List<Field> list1 = new LinkedList<>(Arrays.asList(private_nameFieldSuperClass));
+        listField.addAll(list1);
+
+        int legth = listField.size();
+
+        for (int i = 0; i < legth; i++) {
+            listField.get(i).setAccessible(true);
+            for (int j = 0; j < sqlField.size(); j++) {
+                if (listField.get(i).getName().equals(sqlField.get(j))) {
+                    Object temp = listField.get(i).get(model);
+                    if (temp != null) {
+                        objects.add(temp);
+                    } else {
+
+                        objects.add(null);
+                    }
+
+                    sqlField.remove(j);
                     break;
                 }
-
-                sql.append(rsmd.getColumnName(i) + " , ");
-
             }
-
-            sql.append(" values( ");
-
-
-            for (int i = start; i <= count; i++) {
-
-                if (i == count) {
-                    sql.append("? ) ");
-                } else {
-                    sql.append("?, ");
-                }
-            }
-
-            return sql.toString();
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-
         }
+
+        return objects.toArray();
     }
 
 

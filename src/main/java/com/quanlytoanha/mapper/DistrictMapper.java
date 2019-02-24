@@ -10,9 +10,9 @@ public class DistrictMapper implements RowMapper<DistrictModel> {
     public DistrictModel mapRow(ResultSet rs) {
         try {
             DistrictModel districtModel = new DistrictModel();
-            districtModel.setDistrictId(rs.getLong("districtId"));
+            districtModel.setId(rs.getLong("id"));
             districtModel.setName(rs.getString("name"));
-            districtModel.setStatus(rs.getInt("status"));
+            districtModel.setCode(rs.getString("code"));
             districtModel.setCreatedDate(rs.getTimestamp("createdDate"));
             districtModel.setModifiedDate(rs.getTimestamp("modifiedDate"));
             districtModel.setCreatedBy(rs.getString("createdBy"));

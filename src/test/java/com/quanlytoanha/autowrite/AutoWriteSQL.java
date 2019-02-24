@@ -21,94 +21,71 @@ import static com.quanlytoanha.utils.SqlUtils.getConnection;
 
 public class AutoWriteSQL {
 
-    String table= "district" ;
+    String tableName= "assignment" ;
 
     @Test
     public void autoWriteUpdateSQL() {
-        Connection connection = getConnection();
-        try {
-
-            PreparedStatement statement = connection.prepareStatement("select *from " + table);
-            ResultSet rs = statement.executeQuery();
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-
-            int count = rsmd.getColumnCount();
-            StringBuilder sql = new StringBuilder("update " + rsmd.getTableName(1) + " set ");
-            for (int i = 2; i <= count; i++) {
-
-                if (i == count) {
-                    sql.append(rsmd.getColumnName(i) + " = ?  ");
-                } else {
-                    sql.append(rsmd.getColumnName(i) + " = ? , ");
-                }
-
-
+        List<String> listColumnName = getAllColumnName(tableName);
+        int count = listColumnName.size();
+        StringBuilder sql = new StringBuilder("update " + tableName + " set ");
+        for (int i = 1; i < count; i++) {
+            if (i == count) {
+                sql.append(listColumnName.get(i) + " = ?  ");
+            } else {
+                sql.append(listColumnName.get(i) + " = ? , ");
             }
-            sql.append(" where buildingId = ? ");
-            System.out.println(sql.toString());
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
         }
+        sql.append(" where id = ? ");
+        System.out.println(sql.toString());
+
+
 
     }
 
     @Test
     public void autoWriteInsertSQL() {
-        Connection connection = getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("select *from " + table);
-            ResultSet rs = statement.executeQuery();
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-
-            int count = rsmd.getColumnCount();
-            System.out.println("Column Count : " + count);
-            StringBuilder sql = new StringBuilder(" insert into " + rsmd.getTableName(1) + " (  ");
-            for (int i = 2; i <= count; i++) {
-
-
-                if (i == count) {
-                    sql.append(rsmd.getColumnName(i) + " , ");
-                    sql.delete(sql.length() - 2, sql.length());
-                    sql.append(" )");
-                    break;
-                }
-
-                sql.append(rsmd.getColumnName(i) + " , ");
-
-            }
-
-            sql.append(" values( ");
-
-
-            for (int i = 2; i <= count; i++) {
-
-                if (i == count) {
-                    sql.append("? ) ");
-                } else {
-                    sql.append("?, ");
-                }
-
-            }
-
-
-            System.out.println(sql.toString());
-
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
+        int start;
+        if (tableName.toLowerCase().equals("assignment")) {
+            start = 0;
+        } else {
+            start = 1;
         }
+
+        List<String> listColumnName = getAllColumnName(tableName);
+        int count = listColumnName.size();
+        StringBuilder sql = new StringBuilder(" insert into " + tableName + " (  ");
+        for (int i = start; i < count; i++) {
+
+            if (i == count-1) {
+                sql.append(listColumnName.get(i) + " , ");
+                sql.delete(sql.length() - 2, sql.length());
+                sql.append(" )");
+
+            } else {
+                sql.append(listColumnName.get(i) + " , ");
+            }
+        }
+
+        sql.append(" values( ");
+
+
+        for (int i = start; i < count; i++) {
+
+            if (i == count-1) {
+                sql.append("? ) ");
+            } else {
+                sql.append("?, ");
+            }
+        }
+
+        System.out.println(sql.toString());
     }
 
 
     @org.testng.annotations.Test
     public void AutoWriteGetter() throws IllegalArgumentException,
             IllegalAccessException, NoSuchFieldException, SecurityException {
-        Class<?> aClazz = DetailUserBuildingModel.class;
+        Class<?> aClazz = BuildingModel.class;
 
 
         List<String> sqlField = getAllColumnName("detailuserbuilding");

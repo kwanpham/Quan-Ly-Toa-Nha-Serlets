@@ -15,16 +15,12 @@ public class BuildingService implements IBuildingService {
 
 
     private IBuildingDAO buildingDAO;
-    private IDetailUserBuildingDAO detailUserBuildingDAO;
-    private IDetailBuildingTypeDAO detailBuildingTypeDAO;
-    private IBuildingTypeDAO buildingTypeDAO;
+
     private IDistrictDAO districtDAO;
 
     public BuildingService() {
         buildingDAO = new BuildingDAO();
-        detailUserBuildingDAO = new DetailUserBuidingDAO();
-        detailBuildingTypeDAO = new DetailBuildingTypeDAO();
-        buildingTypeDAO = new BuildingTypeDAO();
+
         districtDAO = new DistrictDAO();
     }
 
@@ -38,13 +34,13 @@ public class BuildingService implements IBuildingService {
 
     @Override
     public BuildingModel update(BuildingModel updateModel) {
-        BuildingModel  oldBuilding = buildingDAO.findOne(updateModel.getBuildingId());
+        BuildingModel  oldBuilding = buildingDAO.findOne(updateModel.getId());
         updateModel.setCreatedDate(oldBuilding.getCreatedDate());
         updateModel.setCreatedBy(oldBuilding.getCreatedBy());
         updateModel.setModifiedDate(new Timestamp(System.currentTimeMillis()));
         updateModel.setModifiedBy("admin");
         buildingDAO.update(updateModel);
-        return buildingDAO.findOne(updateModel.getBuildingId());
+        return buildingDAO.findOne(updateModel.getId());
     }
 
     @Override
@@ -78,21 +74,8 @@ public class BuildingService implements IBuildingService {
 
     @Override
     public DistrictModel findByBuildingId(long id) {
-        return districtDAO.findByBuildingId(id);
+        return null;
     }
 
-    @Override
-    public long save(DetailBuildingTypeModel model) {
-        return detailBuildingTypeDAO.save(model);
-    }
 
-    @Override
-    public List<BuildingTypeModel> findAllBuildingType() {
-        return buildingTypeDAO.findAll();
-    }
-
-    @Override
-    public long save(DetailUserBuildingModel model) {
-        return detailUserBuildingDAO.save(model);
-    }
 }

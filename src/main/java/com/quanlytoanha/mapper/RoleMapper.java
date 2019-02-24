@@ -10,7 +10,7 @@ public class RoleMapper implements RowMapper<RoleModel> {
     public RoleModel mapRow(ResultSet rs) {
         try {
             RoleModel roleModel = new RoleModel();
-            roleModel.setRoleId(rs.getLong("roleId"));
+            roleModel.setId(rs.getLong("id"));
             roleModel.setName(rs.getString("name"));
             roleModel.setStatus(rs.getInt("status"));
             roleModel.setCreatedDate(rs.getTimestamp("createdDate"));

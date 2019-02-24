@@ -1,17 +1,8 @@
 package com.quanlytoanha.model;
 
 public class DistrictModel extends AbstractModel<DistrictModel> {
-    private long districtId;
-    String name;
-    private int status;
 
-    public long getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(long districtId) {
-        this.districtId = districtId;
-    }
+    private String name , code;
 
     public String getName() {
         return name;
@@ -21,11 +12,11 @@ public class DistrictModel extends AbstractModel<DistrictModel> {
         this.name = name;
     }
 
-    public int getStatus() {
-        return status;
+    public String getCode() {
+        return code;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setCode(String code) {
+        this.code = code;
     }
 }

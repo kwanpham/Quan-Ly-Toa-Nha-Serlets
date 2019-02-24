@@ -1,6 +1,6 @@
 package com.quanlytoanha.model;
 
-public class DetailUserBuildingModel extends AbstractModel<DetailUserBuildingModel> {
+public class AssignmentModel extends AbstractModel<AssignmentModel> {
 
     private long userId , buildingId ;
 

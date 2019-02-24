@@ -8,7 +8,7 @@ public class UserModel extends AbstractModel<UserModel> {
     private String fullName;
     private int status;
     private long roleId;
-    private long managerId;
+
 
     public long getUserId() {
         return userId;
@@ -58,11 +58,5 @@ public class UserModel extends AbstractModel<UserModel> {
         this.roleId = roleId;
     }
 
-    public long getManagerId() {
-        return managerId;
-    }
 
-    public void setManagerId(long managerId) {
-        this.managerId = managerId;
-    }
 }

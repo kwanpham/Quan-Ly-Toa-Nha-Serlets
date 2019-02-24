@@ -46,6 +46,13 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right">Kết cấu</label>
+            <div class="col-sm-11">
+                <input type="text" class="form-control" id="structure" name="structure" value="${model.structure}"/>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Số tầng hầm</label>
             <div class="col-sm-11">
                 <input type="number" class="form-control" id="numberOfBasement" name="numberOfBasement"
@@ -279,7 +286,7 @@
         console.log(data);
 
             addNew(data);
-        
+
     });
 
     function addNew(data) {

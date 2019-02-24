@@ -22,11 +22,6 @@ public interface IBuildingService {
 
     DistrictModel findByBuildingId(long id);
 
-    long save(DetailBuildingTypeModel model);
-
-    long save(DetailUserBuildingModel model);
-
-    List<BuildingTypeModel> findAllBuildingType();
 
 
 }

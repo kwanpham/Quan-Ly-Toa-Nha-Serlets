@@ -6,7 +6,7 @@ import java.util.List;
 
 public class BuildingModel extends AbstractModel<BuildingModel> {
 
-    private long buildingId;
+
     private String name;
     private int districtId;
     private String ward;
@@ -18,37 +18,27 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     private String levelBuilding;
     private String rentArea;
     private String areaDescription;
-    private double costRent;
+    private int costRent;
     private String costDescription;
-    private double serviceCost;
-    private double carCost;
-    private double motorbikeCost;
-    private double overtimeCost;
-    private double electricityCost;
-    private double deposit;
-    private double payment;
-    private Timestamp timeContract;
-    private Timestamp timeDecorator;
+    private String serviceCost;
+    private String carCost;
+    private String motorbikeCost;
+    private String overtimeCost;
+    private String electricityCost;
+    private String deposit;
+    private String payment;
+    private String timeContract;
+    private String timeDecorator;
     private String managerName;
     private String mamagerPhone;
-    private double commission;
+    private String commission;
     private String note;
     private String link;
     private String location;
     private String imageName;
     private String thumbnailBase64;
-    private Integer status;
-    private List<BuildingTypeModel> buildingTypes = new ArrayList<>();
-    private List<UserModel> userModels;
-
-
-    public long getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(long buildingId) {
-        this.buildingId = buildingId;
-    }
+    private String type;
+    private List<UserModel> users;
 
     public String getName() {
         return name;
@@ -138,11 +128,11 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.areaDescription = areaDescription;
     }
 
-    public double getCostRent() {
+    public int getCostRent() {
         return costRent;
     }
 
-    public void setCostRent(double costRent) {
+    public void setCostRent(int costRent) {
         this.costRent = costRent;
     }
 
@@ -154,75 +144,75 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.costDescription = costDescription;
     }
 
-    public double getServiceCost() {
+    public String getServiceCost() {
         return serviceCost;
     }
 
-    public void setServiceCost(double serviceCost) {
+    public void setServiceCost(String serviceCost) {
         this.serviceCost = serviceCost;
     }
 
-    public double getCarCost() {
+    public String getCarCost() {
         return carCost;
     }
 
-    public void setCarCost(double carCost) {
+    public void setCarCost(String carCost) {
         this.carCost = carCost;
     }
 
-    public double getMotorbikeCost() {
+    public String getMotorbikeCost() {
         return motorbikeCost;
     }
 
-    public void setMotorbikeCost(double motorbikeCost) {
+    public void setMotorbikeCost(String motorbikeCost) {
         this.motorbikeCost = motorbikeCost;
     }
 
-    public double getOvertimeCost() {
+    public String getOvertimeCost() {
         return overtimeCost;
     }
 
-    public void setOvertimeCost(double overtimeCost) {
+    public void setOvertimeCost(String overtimeCost) {
         this.overtimeCost = overtimeCost;
     }
 
-    public double getElectricityCost() {
+    public String getElectricityCost() {
         return electricityCost;
     }
 
-    public void setElectricityCost(double electricityCost) {
+    public void setElectricityCost(String electricityCost) {
         this.electricityCost = electricityCost;
     }
 
-    public double getDeposit() {
+    public String getDeposit() {
         return deposit;
     }
 
-    public void setDeposit(double deposit) {
+    public void setDeposit(String deposit) {
         this.deposit = deposit;
     }
 
-    public double getPayment() {
+    public String getPayment() {
         return payment;
     }
 
-    public void setPayment(double payment) {
+    public void setPayment(String payment) {
         this.payment = payment;
     }
 
-    public Timestamp getTimeContract() {
+    public String getTimeContract() {
         return timeContract;
     }
 
-    public void setTimeContract(Timestamp timeContract) {
+    public void setTimeContract(String timeContract) {
         this.timeContract = timeContract;
     }
 
-    public Timestamp getTimeDecorator() {
+    public String getTimeDecorator() {
         return timeDecorator;
     }
 
-    public void setTimeDecorator(Timestamp timeDecorator) {
+    public void setTimeDecorator(String timeDecorator) {
         this.timeDecorator = timeDecorator;
     }
 
@@ -242,11 +232,11 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.mamagerPhone = mamagerPhone;
     }
 
-    public double getCommission() {
+    public String getCommission() {
         return commission;
     }
 
-    public void setCommission(double commission) {
+    public void setCommission(String commission) {
         this.commission = commission;
     }
 
@@ -290,27 +280,21 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.thumbnailBase64 = thumbnailBase64;
     }
 
-    public Integer getStatus() {
-        return status;
+
+    public String getType() {
+        return type;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public List<BuildingTypeModel> getBuildingTypes() {
-        return buildingTypes;
+    public List<UserModel> getUsers() {
+        return users;
     }
 
-    public void setBuildingTypes(List<BuildingTypeModel> buildingTypes) {
-        this.buildingTypes = buildingTypes;
-    }
-
-    public List<UserModel> getUserModels() {
-        return userModels;
-    }
-
-    public void setUserModels(List<UserModel> userModels) {
-        this.userModels = userModels;
+    public void setUsers(List<UserModel> users) {
+        this.users = users;
     }
 }

@@ -25,22 +25,20 @@ public class RoleDAO extends AbsstractDAO<RoleModel> implements IRoleDAO {
     @Override
     public Long save(RoleModel roleModel) {
         String sql = autoWriteInsertSQL("role");
-        return insert(sql , roleModel.getName() ,roleModel.getStatus() ,roleModel.getCreatedDate() ,roleModel.getModifiedDate() ,
-                roleModel.getCreatedBy() ,roleModel.getModifiedBy());
+        return insert(sql , roleModel);
 
     }
 
     @Override
     public void update(RoleModel roleModel) {
         String sql = autoWriteUpdateSQL("role");
-        update(sql, roleModel.getName() ,roleModel.getStatus() ,roleModel.getCreatedDate() ,roleModel.getModifiedDate() ,
-                roleModel.getCreatedBy() ,roleModel.getModifiedBy() , roleModel.getRoleId());
+        update(sql, roleModel);
     }
 
     @Override
     public void delete(long id) {
         String sql = "delete from role where roleId = ?" ;
-        update(sql , id);
+        delete(sql , id);
     }
 
     @Override

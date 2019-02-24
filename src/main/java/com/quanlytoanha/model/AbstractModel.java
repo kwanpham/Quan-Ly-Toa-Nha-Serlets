@@ -6,6 +6,7 @@ import java.util.List;
 
 public class AbstractModel<T> {
 
+    private long id;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
     private String createdBy;
@@ -20,7 +21,16 @@ public class AbstractModel<T> {
     private String sortBy;
     private String alert;
     private String message;
-    private String type;
+    private String tableName;
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public Timestamp getCreatedDate() {
         return createdDate;
@@ -134,11 +144,11 @@ public class AbstractModel<T> {
         this.message = message;
     }
 
-    public String getType() {
-        return type;
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 }

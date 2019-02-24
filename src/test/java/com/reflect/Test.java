@@ -28,7 +28,7 @@ public class Test {
         BuildingModel buildingModel = new BuildingModel();
         BuildingDAO buildingDAO = new BuildingDAO();
         buildingModel.setName("ga");
-        buildingModel.setStatus(1);
+
         buildingModel.setDistrictId(2);
         buildingModel.setWard("An khanh");
         List<String> sqlField = SqlUtils.getAllColumnName("building");
@@ -73,7 +73,7 @@ public class Test {
         //System.out.printf(buildingDAO.save(buildingModel) + "  thanh cong ");
 
         buildingModel.setStreet("Kakak");
-        buildingModel.setBuildingId(1);
+        buildingModel.setId(1);
         buildingDAO.update(buildingModel);
 
 

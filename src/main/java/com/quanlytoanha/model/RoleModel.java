@@ -2,18 +2,12 @@ package com.quanlytoanha.model;
 
 public class RoleModel extends AbstractModel<RoleModel> {
 
-    private long roleId;
+
     private String name;
     private int status;
 
 
-    public long getRoleId() {
-        return roleId;
-    }
 
-    public void setRoleId(long roleId) {
-        this.roleId = roleId;
-    }
 
     public String getName() {
         return name;

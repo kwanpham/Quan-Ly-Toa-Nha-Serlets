@@ -26,8 +26,5 @@ public class UserService implements IUserService {
         return userDAO.findAll();
     }
 
-    @Override
-    public List<UserModel> findByManagerId(long id) {
-        return userDAO.findByMangerId(id);
-    }
+
 }

@@ -9,15 +9,7 @@ public interface IDistrictDAO extends GenericDAO<DistrictModel> {
 
     DistrictModel findOne(Long id);
 
-    DistrictModel findByBuildingId(Long buildingId);
-
-    Long save(DistrictModel DistrictModel);
-
-    void update(DistrictModel DistrictModel);
-
-    void delete(long id);
-
     List<DistrictModel> findAll();
 
-    int getTotalItem();
+
 }

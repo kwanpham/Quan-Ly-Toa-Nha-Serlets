@@ -11,7 +11,7 @@ public interface IUserDAO extends GenericDAO<UserModel> {
 
     UserModel findOne(Long id);
 
-    List<UserModel> findByRoleId(Long categoryId);
+    List<UserModel> findByRoleId(long categoryId);
 
     Long save(UserModel userModel);
 
@@ -23,6 +23,5 @@ public interface IUserDAO extends GenericDAO<UserModel> {
 
     int getTotalItem();
 
-    List<UserModel> findByMangerId(long managerId);
 
 }

@@ -11,23 +11,21 @@ public class UserDAO extends AbsstractDAO<UserModel> implements IUserDAO {
 
     @Override
     public UserModel findOne(Long id) {
-        String sql = "SELECT * FROM user WHERE userid = ?";
+        String sql = "SELECT * FROM user WHERE id = ?";
         List<UserModel> user = query(sql, new UserMapper(), id);
         return user.isEmpty() ? null : user.get(0);
     }
 
     @Override
-    public List<UserModel> findByRoleId(Long roleId) {
-        String sql = "SELECT * FROM news WHERE roleid = ?";
+    public List<UserModel> findByRoleId(long roleId) {
+        String sql = "SELECT * FROM user WHERE roleid = ?";
         return query(sql, new UserMapper(), roleId);
     }
 
     @Override
     public Long save(UserModel userModel) {
         String sql =  autoWriteInsertSQL("user");
-        return insert(sql, userModel.getUsername() ,userModel.getPassword() ,userModel.getFullName() ,userModel.getStatus() ,
-                userModel.getRoleId() ,userModel.getManagerId() ,userModel.getCreatedDate() ,userModel.getModifiedDate() ,
-                userModel.getCreatedBy() ,userModel.getModifiedBy());
+        return insert(sql, userModel);
 
     }
 
@@ -36,15 +34,13 @@ public class UserDAO extends AbsstractDAO<UserModel> implements IUserDAO {
         String sql = autoWriteUpdateSQL("user");
 
 
-        update(sql, userModel.getUsername() ,userModel.getPassword() ,userModel.getFullName() ,userModel.getStatus() ,
-                userModel.getRoleId() ,userModel.getManagerId() ,userModel.getCreatedDate() ,userModel.getModifiedDate() ,
-                userModel.getCreatedBy() ,userModel.getModifiedBy() , userModel.getUserId());
+        update(sql, userModel);
     }
 
     @Override
     public void delete(long id) {
-        String sql = "DELETE FROM user WHERE userid = ?";
-        update(sql, id);
+        String sql = "DELETE FROM user WHERE id = ?";
+        delete(sql, id);
     }
 
     @Override
@@ -65,9 +61,5 @@ public class UserDAO extends AbsstractDAO<UserModel> implements IUserDAO {
         return  query(sql , new UserMapper() , userName , password ,status).get(0);
     }
 
-    @Override
-    public List<UserModel> findByMangerId(long managerId) {
-        String sql = "SELECT * FROM user where mangerId = ? " ;
-        return query(sql , new UserMapper() , managerId);
-    }
+
 }

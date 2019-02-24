@@ -56,7 +56,7 @@ public class BuildingController extends HttpServlet {
     private void addBuilding(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         request.setAttribute("districts" , buildingService.findAllDistrict());
-        request.setAttribute("buildingtypes" ,buildingService.findAllBuildingType());
+
         view = "views/admin/addbuilding.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(view);
         rd.forward(request, response);
