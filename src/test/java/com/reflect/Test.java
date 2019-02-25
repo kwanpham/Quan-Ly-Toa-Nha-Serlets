@@ -29,7 +29,7 @@ public class Test {
         BuildingDAO buildingDAO = new BuildingDAO();
         buildingModel.setName("ga");
 
-        buildingModel.setDistrictId(2);
+        buildingModel.setDistrictCode("quan_1");
         buildingModel.setWard("An khanh");
         List<String> sqlField = SqlUtils.getAllColumnName("building");
 

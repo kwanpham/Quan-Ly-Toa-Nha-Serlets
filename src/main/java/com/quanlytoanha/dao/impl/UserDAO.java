@@ -32,8 +32,6 @@ public class UserDAO extends AbsstractDAO<UserModel> implements IUserDAO {
     @Override
     public void update(UserModel userModel) {
         String sql = autoWriteUpdateSQL("user");
-
-
         update(sql, userModel);
     }
 

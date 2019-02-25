@@ -8,7 +8,7 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
 
 
     private String name;
-    private int districtId;
+    private String districtCode;
     private String ward;
     private String street;
     private String structure;
@@ -37,8 +37,24 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     private String location;
     private String imageName;
     private String thumbnailBase64;
-    private String type;
+    private String BuildingType;
     private List<UserModel> users;
+
+    public enum BuildingTypes {
+
+        TANGTRET("tang_tret" , "Tầng trệt"),
+        NGUYENCAN("nguyen_can" , "Nguyên căn"),
+        NOITHAT("noi_that" , "Nội thất");
+
+        private String code , name ;
+
+        BuildingTypes(String code, String name) {
+            this.code = code;
+            this.name = name;
+        }
+
+
+    }
 
     public String getName() {
         return name;
@@ -48,12 +64,12 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.name = name;
     }
 
-    public int getDistrictId() {
-        return districtId;
+    public String getDistrictCode() {
+        return districtCode;
     }
 
-    public void setDistrictId(int districtId) {
-        this.districtId = districtId;
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
     }
 
     public String getWard() {
@@ -281,13 +297,12 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     }
 
 
-    public String getType() {
-        return type;
+    public String getBuildingType() {
+        return BuildingType;
     }
 
-
-    public void setType(String type) {
-        this.type = type;
+    public void setBuildingType(String buildingType) {
+        BuildingType = buildingType;
     }
 
     public List<UserModel> getUsers() {

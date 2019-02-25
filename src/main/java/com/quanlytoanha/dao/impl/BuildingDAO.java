@@ -1,7 +1,9 @@
 package com.quanlytoanha.dao.impl;
 
 import com.quanlytoanha.dao.IBuildingDAO;
+import com.quanlytoanha.mapper.AssignmentMapper;
 import com.quanlytoanha.mapper.BuildingMapper;
+import com.quanlytoanha.model.AssignmentModel;
 import com.quanlytoanha.model.BuildingModel;
 import com.quanlytoanha.paging.Pageble;
 
@@ -58,6 +60,20 @@ public class BuildingDAO extends AbsstractDAO<BuildingModel> implements IBuildin
     }
 
 
+    @Override
+    public long addAssignment(AssignmentModel model) {
+        String sql = autoWriteInsertSQL("assignment");
+        return insert(sql, model);
+    }
 
+    @Override
+    public AssignmentModel findByBuildingId(long buildingId) {
+        String sql = "select *from assignment where buildingId = ?";
+        return null;
+    }
 
+    @Override
+    public AssignmentModel findByUserId(long userId) {
+        return null;
+    }
 }

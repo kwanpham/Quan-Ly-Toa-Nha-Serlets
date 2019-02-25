@@ -23,7 +23,7 @@
                     <c:if test="${empty model.name}">
                         <option value="">Chọn quận</option>
                         <c:forEach var="item" items="${districts}">
-                            <option value="${item.districtId}">${item.name}</option>
+                            <option value="${item.code}">${item.name}</option>
                         </c:forEach>
                     </c:if>
                 </select>
@@ -280,12 +280,13 @@
             checkBoxValue.push($(this).val());
         });
 
-        data["buildingTypes"] = checkBoxValue;
+        //data["buildingTypes"] = checkBoxValue;
 
+var data1 = JSON.stringify(data);
 
-        console.log(data);
+        console.log(data1);
 
-            addNew(data);
+           // addNew(data);
 
     });
 
@@ -294,7 +295,7 @@
             url: '${APIurl}',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(data),
+            data: data1,
             dataType: 'json',
             success: function (result) {
                 console.log(result);

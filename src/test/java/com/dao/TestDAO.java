@@ -17,7 +17,7 @@ public class TestDAO {
         BuildingModel model = new BuildingModel();
 
         model.setName("Toa Nha 5");
-        model.setDistrictId(1);
+        model.setDistrictCode("quan_1");
         model.setCostRent(253000);
         model.setTableName("building");
         model.setCreatedDate(new Timestamp(System.currentTimeMillis()));
@@ -32,7 +32,7 @@ public class TestDAO {
 
         model.setId(3);
         model.setName("Toa Nha Tan binh");
-        model.setDistrictId(1);
+        model.setDistrictCode("quan_1");
         model.setCostRent(253000);
         model.setTableName("building");
         model.setCreatedDate(new Timestamp(System.currentTimeMillis()));

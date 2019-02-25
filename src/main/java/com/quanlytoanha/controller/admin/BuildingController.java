@@ -1,5 +1,6 @@
 package com.quanlytoanha.controller.admin;
 
+import com.quanlytoanha.model.BuildingModel;
 import com.quanlytoanha.service.IBuildingService;
 import com.quanlytoanha.service.IUserService;
 import com.quanlytoanha.service.impl.BuildingService;
@@ -55,7 +56,9 @@ public class BuildingController extends HttpServlet {
 
     private void addBuilding(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        BuildingModel temp = new BuildingModel();
         request.setAttribute("districts" , buildingService.findAllDistrict());
+
 
         view = "views/admin/addbuilding.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(view);
