@@ -308,7 +308,7 @@
         console.log(data1);
 
         var id = $('#id').val();
-        if (id == "") {
+        if (id === "") {
             addNew(data);
         } else {
             updateNew(data);
