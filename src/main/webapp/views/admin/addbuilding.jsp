@@ -10,8 +10,19 @@
 <div class="main-content">
     <h2>Thêm sản phẩm</h2>
     <form action="" id="formSubmit">
+
+        <c:if test="${not empty model.id}">
+            <div class="form-group">
+                <label class="col-sm-1 control-label no-padding-right">Mã tòa nhà</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="id" name="id" value="${model.id}" readonly="readonly"/>
+                </div>
+            </div>
+
+        </c:if>
+
         <div class="form-group">
-            <label class="col-sm-1 control-label no-padding-right">Tên sản phẩm</label>
+            <label class="col-sm-1 control-label no-padding-right">Tên tòa nhà</label>
             <div class="col-sm-11">
                 <input type="text" class="form-control" id="name" name="name" value="${model.name}"/>
             </div>
@@ -19,13 +30,23 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Quận</label>
             <div class="col-sm-11">
-                <select class="form-control" id="district" name="district" value="${model.district}">
-                    <c:if test="${empty model.name}">
+                <select class="form-control" id="district" name="districtCode" ">
+                    <c:if test="${empty model.districtCode}">
                         <option value="">Chọn quận</option>
                         <c:forEach var="item" items="${districts}">
                             <option value="${item.code}">${item.name}</option>
                         </c:forEach>
                     </c:if>
+
+                    <c:if test="${not empty model.districtCode }">
+                        <c:forEach var="item" items="${districts}">
+                            <option value="${item.code}" <c:if test="${item.code == model.districtCode}">selected="selected"</c:if> >
+                                    ${item.name}
+                            </option>
+                        </c:forEach>
+
+                    </c:if>
+
                 </select>
 
             </div>
@@ -79,7 +100,7 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Hạng</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="leve" name="level" value="${model.level}"/>
+                <input type="text" class="form-control" id="levelBuilding" name="levelBuilding" value="${model.levelBuilding}"/>
             </div>
         </div>
 
@@ -170,8 +191,8 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Thời han thuê</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="timeConstract" name="timeConstract"
-                       value="${model.timeConstract}"/>
+                <input type="text" class="form-control" id="timeContract" name="timeContract"
+                       value="${model.timeContract}"/>
             </div>
         </div>
 
@@ -195,7 +216,7 @@
             <label class="col-sm-1 control-label no-padding-right">SĐT quản lý</label>
             <div class="col-sm-11">
                 <input type="text" class="form-control" id="mamagerPhone" name="mamagerPhone"
-                       value="${model.mamagerPhone}"/>
+                       value="${model.managerPhone}"/>
             </div>
         </div>
 
@@ -206,20 +227,20 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-1 control-label no-padding-right">Loại sản phẩm</label>
-            <div class="col-sm-11">
-                <c:forEach var="item" items="${buildingtypes}">
-                    <div class="form-check">
+        <%--<div class="form-group">--%>
+            <%--<label class="col-sm-1 control-label no-padding-right">Loại sản phẩm</label>--%>
+            <%--<div class="col-sm-11">--%>
+                <%--<c:forEach var="item" items="${buildingtypes}">--%>
+                    <%--<div class="form-check">--%>
 
-                            <input type="checkbox" class="form-check-input"  name="buildingTypes"
-                                   value="${item.buildingTypeId}">${item.name}
+                            <%--<input type="checkbox" class="form-check-input"  name="buildingTypes"--%>
+                                   <%--value="${item.buildingTypeId}">${item.name}--%>
 
-                    </div>
-                </c:forEach>
+                    <%--</div>--%>
+                <%--</c:forEach>--%>
 
-            </div>
-        </div>
+            <%--</div>--%>
+        <%--</div>--%>
 
 
         <div class="form-group">
@@ -246,7 +267,7 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Tên ảnh</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="imageName" name="imageName" value="${model.imageName}"/>
+                <input type="text" class="form-control" id="image" name="image" value="${model.image}"/>
             </div>
         </div>
 
@@ -282,15 +303,20 @@
 
         //data["buildingTypes"] = checkBoxValue;
 
-var data1 = JSON.stringify(data);
+        var data1 = JSON.stringify(data);
 
         console.log(data1);
 
-           // addNew(data);
+        var id = $('#id').val();
+        if (id == "") {
+            addNew(data);
+        } else {
+            updateNew(data);
+        }
 
     });
 
-    function addNew(data) {
+    function addNew(data1) {
         $.ajax({
             url: '${APIurl}',
             type: 'POST',
@@ -305,7 +331,7 @@ var data1 = JSON.stringify(data);
             }
         });
     }
-    function updateNew(data) {
+    function updateNew(data1) {
         $.ajax({
             url: '${APIurl}',
             type: 'PUT',

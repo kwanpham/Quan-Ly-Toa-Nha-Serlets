@@ -31,19 +31,19 @@ public class BuildingDAO extends AbsstractDAO<BuildingModel> implements IBuildin
 
     @Override
     public void delete(long id) {
-        String sql = "DELETE FROM buidingWHERE id = ?";
+        String sql = "DELETE FROM building WHERE id = ?";
         delete(sql, id);
     }
 
     @Override
     public int getTotalItem() {
-        String sql = "select count(*) from buiding";
+        String sql = "select count(*) from building";
         return count(sql);
     }
 
     @Override
     public BuildingModel findOne(long id) {
-        String sql = "select * from buiding where id = " + id;
+        String sql = "select * from building where id = ?" ;
         return query(sql, new BuildingMapper(), id).get(0);
     }
 
@@ -60,20 +60,5 @@ public class BuildingDAO extends AbsstractDAO<BuildingModel> implements IBuildin
     }
 
 
-    @Override
-    public long addAssignment(AssignmentModel model) {
-        String sql = autoWriteInsertSQL("assignment");
-        return insert(sql, model);
-    }
 
-    @Override
-    public AssignmentModel findByBuildingId(long buildingId) {
-        String sql = "select *from assignment where buildingId = ?";
-        return null;
-    }
-
-    @Override
-    public AssignmentModel findByUserId(long userId) {
-        return null;
-    }
 }

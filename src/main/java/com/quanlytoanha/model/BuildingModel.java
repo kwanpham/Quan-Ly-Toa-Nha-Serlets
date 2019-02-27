@@ -30,15 +30,15 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     private String timeContract;
     private String timeDecorator;
     private String managerName;
-    private String mamagerPhone;
+    private String managerPhone;
     private String commission;
     private String note;
     private String link;
     private String location;
-    private String imageName;
-    private String thumbnailBase64;
+    private String image;
     private String BuildingType;
     private List<UserModel> users;
+    private String type ;
 
     public enum BuildingTypes {
 
@@ -240,12 +240,20 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.managerName = managerName;
     }
 
-    public String getMamagerPhone() {
-        return mamagerPhone;
+    public String getManagerPhone() {
+        return managerPhone;
     }
 
-    public void setMamagerPhone(String mamagerPhone) {
-        this.mamagerPhone = mamagerPhone;
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getCommission() {
@@ -280,21 +288,14 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.location = location;
     }
 
-    public String getImageName() {
-        return imageName;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getThumbnailBase64() {
-        return thumbnailBase64;
-    }
-
-    public void setThumbnailBase64(String thumbnailBase64) {
-        this.thumbnailBase64 = thumbnailBase64;
-    }
 
 
     public String getBuildingType() {

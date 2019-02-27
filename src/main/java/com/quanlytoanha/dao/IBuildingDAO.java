@@ -20,9 +20,5 @@ public interface IBuildingDAO extends GenericDAO<BuildingModel> {
 
     List<BuildingModel> findAll(Pageble pageble);
 
-    long addAssignment(AssignmentModel model);
 
-    AssignmentModel findByBuildingId(long buildingId);
-
-    AssignmentModel findByUserId(long userId);
 }

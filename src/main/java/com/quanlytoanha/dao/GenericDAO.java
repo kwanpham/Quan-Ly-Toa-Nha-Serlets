@@ -5,10 +5,10 @@ import com.quanlytoanha.model.AbstractModel;
 
 import java.util.List;
 
-public interface GenericDAO<T> {
+public interface GenericDAO<T extends AbstractModel> {
 
     List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters);
-    <T extends AbstractModel> void update (String sql, T t);
-    <T extends AbstractModel> long insert (String sql, T t);
+    void update (String sql, T t);
+    long insert (String sql, T t);
     int count(String sql, Object... parameters);
 }

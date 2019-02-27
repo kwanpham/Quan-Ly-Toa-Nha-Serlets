@@ -1,10 +1,15 @@
 package com.quanlytoanha.controller.admin;
 
+import com.quanlytoanha.constant.SystemConstant;
 import com.quanlytoanha.model.BuildingModel;
+import com.quanlytoanha.paging.PageRequest;
+import com.quanlytoanha.paging.Pageble;
 import com.quanlytoanha.service.IBuildingService;
 import com.quanlytoanha.service.IUserService;
 import com.quanlytoanha.service.impl.BuildingService;
 import com.quanlytoanha.service.impl.UserService;
+import com.quanlytoanha.sort.Sorter;
+import com.quanlytoanha.utils.FormUtil;
 
 
 import javax.servlet.RequestDispatcher;
@@ -19,8 +24,9 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/admin-building"})
 public class BuildingController extends HttpServlet {
 
-
+    private BuildingModel model;
     private IBuildingService buildingService;
+    private String view = "";
 
 
     private IUserService userService;
@@ -33,7 +39,7 @@ public class BuildingController extends HttpServlet {
         userService = new UserService();
     }
 
-    private String view = "";
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -41,16 +47,44 @@ public class BuildingController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String type = request.getParameter("type").toString();
-        switch (type) {
+
+        model = FormUtil.toModel(BuildingModel.class , request);
+        String ref = request.getParameter("ref");
+
+        switch (ref) {
             case "add" :
                 addBuilding(request , response);
                 break;
+            case "list" :
+                showListBuilding(request , response);
+                break;
+            case "edit" :
+                editBuilding(request , response);
+                break;
         }
+
+        RequestDispatcher rd = request.getRequestDispatcher(view);
+        rd.forward(request, response);
 
     }
 
-    private void showListBuilding() {
+    private void editBuilding(HttpServletRequest request, HttpServletResponse response) {
+
+        request.setAttribute("districts" , buildingService.findAllDistrict());
+        request.setAttribute(SystemConstant.MODEL , buildingService.findOne(model.getId()));
+        view = "views/admin/addbuilding.jsp";
+    }
+
+    private void showListBuilding(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BuildingModel model = FormUtil.toModel(BuildingModel.class , request);
+        Pageble pageble = new PageRequest(model.getPage(), model.getMaxPageItem(),
+                new Sorter(model.getSortName(), model.getSortBy()));
+
+        model.setListResult(buildingService.findAll(pageble));
+        model.setTotalItem(buildingService.getTotalItem());
+        model.setTotalPage((int) Math.ceil((double) model.getTotalItem() / model.getMaxPageItem()));
+        request.setAttribute(SystemConstant.MODEL, model);
+        view = "views/admin/listbuilding.jsp";
 
     }
 
@@ -58,12 +92,7 @@ public class BuildingController extends HttpServlet {
 
         BuildingModel temp = new BuildingModel();
         request.setAttribute("districts" , buildingService.findAllDistrict());
-
-
         view = "views/admin/addbuilding.jsp";
-        RequestDispatcher rd = request.getRequestDispatcher(view);
-        rd.forward(request, response);
-
 
     }
 

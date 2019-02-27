@@ -22,6 +22,7 @@ public class AbstractModel<T> {
     private String alert;
     private String message;
     private String tableName;
+    private String ref;
 
 
     public long getId() {
@@ -150,5 +151,13 @@ public class AbstractModel<T> {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
     }
 }

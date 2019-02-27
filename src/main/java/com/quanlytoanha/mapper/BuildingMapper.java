@@ -35,13 +35,13 @@ public class BuildingMapper implements RowMapper<BuildingModel> {
             buildingModel.setTimeContract(rs.getString("timeContract"));
             buildingModel.setTimeDecorator(rs.getString("timeDecorator"));
             buildingModel.setManagerName(rs.getString("managerName"));
-            buildingModel.setMamagerPhone(rs.getString("mamagerPhone"));
+            buildingModel.setManagerPhone(rs.getString("mamagerPhone"));
             buildingModel.setCommission(rs.getString("commission"));
             buildingModel.setNote(rs.getString("note"));
             buildingModel.setLink(rs.getString("link"));
             buildingModel.setLocation(rs.getString("location"));
-            buildingModel.setImageName(rs.getString("imageName"));
-            buildingModel.setThumbnailBase64(rs.getString("thumbnailBase64"));
+            buildingModel.setImage(rs.getString("image"));
+
 
 
             buildingModel.setCreatedDate(rs.getTimestamp("createdDate"));

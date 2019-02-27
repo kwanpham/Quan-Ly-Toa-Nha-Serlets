@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 
-public class AbsstractDAO<T> implements GenericDAO<T> {
+public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
 
 //    ResourceBundle resourceBundle = ResourceBundle.getBundle("db");
 //
@@ -40,111 +40,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
     }
 
     @Override
-    public List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
-        List<T> results = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = getConnection();
-            statement = connection.prepareStatement(sql);
-            setParameter(statement, parameters);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                results.add(rowMapper.mapRow(resultSet));
-            }
-            return results;
-        } catch (SQLException | NullPointerException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    @Override
-    public <M extends AbstractModel> void update(String sql, M model) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = getConnection();
-            connection.setAutoCommit(false);
-            statement = connection.prepareStatement(sql);
-            Object[] parameters = autoGetValueFromModel(model , model.getTableName());
-            parameters = ArrayUtils.add(parameters , model.getId());
-            setParameter(statement, parameters);
-            statement.executeUpdate();
-            connection.commit();
-            System.out.println("Update thanh cong");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException e2) {
-                e2.printStackTrace();
-            }
-        }
-    }
-
-    public void delete(String sql , Object... parameters) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = getConnection();
-            connection.setAutoCommit(false);
-            statement = connection.prepareStatement(sql);
-            setParameter(statement, parameters);
-            statement.executeUpdate();
-            connection.commit();
-            System.out.println("Delete thanh cong");
-        } catch (SQLException e){
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException e2) {
-                e2.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public <M extends AbstractModel> long insert(String sql, M model) {
+    public long insert(String sql, T model) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -194,6 +90,114 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
     }
 
     @Override
+    public List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
+        List<T> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
+            setParameter(statement, parameters);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                results.add(rowMapper.mapRow(resultSet));
+            }
+            return results;
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public  void update(String sql, T model) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = getConnection();
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(sql);
+            Object[] parameters = autoGetValueFromModel(model , model.getTableName());
+            parameters = ArrayUtils.add(parameters , model.getId());
+            setParameter(statement, parameters);
+            statement.executeUpdate();
+            connection.commit();
+            System.out.println("Update thanh cong");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+
+
+    public void delete(String sql , Object... parameters) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = getConnection();
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(sql);
+            setParameter(statement, parameters);
+            statement.executeUpdate();
+            connection.commit();
+            System.out.println("Delete thanh cong");
+        } catch (SQLException e){
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+
+
+    @Override
     public int count(String sql, Object... parameters) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -209,6 +213,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
             }
             return count;
         } catch (SQLException e) {
+            e.printStackTrace();
             return 0;
         } finally {
             try {
@@ -246,10 +251,14 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
                 }
             }
 
-            System.out.println("parameters length at setpareameter() : " + parameters.length);
+            //System.out.println("parameters length at setpareameter() : " + parameters.length);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Class<Long> typeof(final long expr) {
+        return Long.TYPE;
     }
 
     private List<String> getAllColumnName(String table) {
@@ -268,7 +277,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
 
             }
 
-            System.out.println(listColumNames.toString());
+            //System.out.println(listColumNames.toString());
             return listColumNames;
 
 
@@ -328,10 +337,10 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
         return sql.toString();
     }
 
-    private  <M extends AbstractModel> Object[] autoGetValueFromModel(M model, String tableName) throws IllegalArgumentException,
+    private  Object[] autoGetValueFromModel(T model, String tableName) throws IllegalArgumentException,
             IllegalAccessException, NoSuchFieldException, SecurityException {
 
-        Class<M> aClazz = (Class<M>) model.getClass();
+        Class<T> aClazz = (Class<T>) model.getClass();
         List<Object> objects = new ArrayList<>();
         List<String> sqlField = getAllColumnName(tableName);
 
@@ -345,7 +354,7 @@ public class AbsstractDAO<T> implements GenericDAO<T> {
 
         for (int i = 0; i < legth; i++) {
             listField.get(i).setAccessible(true);
-            for (int j = 0; j < sqlField.size(); j++) {
+            for (int j = 1; j < sqlField.size(); j++) {
                 if (listField.get(i).getName().equals(sqlField.get(j))) {
                     Object temp = listField.get(i).get(model);
                     if (temp != null) {

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%--
   Created by IntelliJ IDEA.
   User: MyPC
@@ -9,11 +10,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Danh sách tòa nhà</title>
+
 </head>
 <body>
 <div class="main-content">
-    <form action="<c:url value='/admin-home'/>" id="formSubmit" method="get">
+    <form action="<c:url value='/admin-building'/>" id="formSubmit" method="get">
 
         <div class="main-content-inner">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -60,21 +62,23 @@
                                             <th><input type="checkbox" id="deletelAll"></th>
                                             <th>Ngày</th>
                                             <th>Tên sản phẩm</th>
-                                            <th>Địa ch</th>
+                                            <th>Địa chỉ</th>
                                             <th>Tên quản lý</th>
                                             <th>Số điện thoại</th>
-                                            <th>Đ.T sàn</th>
-                                            <th>Đ.T trống</th>
+                                            <th>D.T sàn</th>
+                                            <th>D.T trống</th>
                                             <th>Giá thuê</th>
                                             <th>Phí dịch vụ</th>
+                                            <th>Phí môi giới</th>
                                             <th>Thao tác</th>
                                         </tr>
                                         </thead>
 
                                         <tbody>
-                                        <c:forEach var="item" items="${model1.listResult}">
+                                        <c:forEach var="item" items="${model.listResult}">
                                             <tr>
-                                                <td>${item.creatDate}</td>
+                                                <td><input type="checkbox" class="check-box-element" id="checkbox_${item.id}" value="${item.id}"/></td>
+                                                <td><fmt:formatDate value="${item.createdDate}" pattern="MM/dd/yyyy"/></td>
                                                 <td>${item.name}</td>
                                                 <td>${item.street}</td>
                                                 <td>${item.managerName}</td>
@@ -83,78 +87,79 @@
                                                 <td>${item.rentArea}</td>
                                                 <td>${item.costRent}</td>
                                                 <td>${item.serviceCost}</td>
+                                                <td>${item.commission}</td>
                                                 <td>
                                                     <c:url var="editURL" value="/admin-building">
-                                                        <c:param name="type" value="edit"/>
+                                                        <c:param name="ref" value="edit"/>
                                                         <c:param name="id" value="${item.id}"/>
                                                     </c:url>
                                                     <a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip"
                                                        title="Cập nhật bài viết" href='${editURL}'><i
                                                             class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                     </a>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                            data-target="#myModal">
-                                                        NV
+
+                                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                                            data-target="#myModal"><span class="glyphicon glyphicon-user"></span>
                                                     </button>
-
-                                                    <!-- The Modal -->
-                                                    <div class="modal fade" id="myModal">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-
-                                                                <!-- Modal Header -->
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title">Chọn nhân viên</h4>
-                                                                    <button type="button" class="close"
-                                                                            data-dismiss="modal">&times;
-                                                                    </button>
-                                                                </div>
-
-                                                                <!-- Modal body -->
-                                                                <div class="modal-body">
-                                                                    <table class="table table-hover">
-                                                                        <thead>
-                                                                        <tr>
-                                                                            <th>Chọn nhân viên</th>
-
-                                                                            <th>Tên nhân viên</th>
-                                                                        </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                        <tr>
-
-                                                                        <c:forEach var="item2"  items="${model2.listResult}">
-                                                                            <td><input class="form-check-input" type="checkbox"></td>
-
-                                                                            <td>${item.name}</td>
-                                                                            </c:forEach>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-
-                                                                <!-- Modal footer -->
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-danger"
-                                                                            data-dismiss="modal">Đóng
-                                                                    </button>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
                                     </table>
+
+                                    <!-- The Modal -->
+                                    <div class="modal fade" id="myModal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Chọn nhân viên</h4>
+                                                    <button type="button" class="close"
+                                                            data-dismiss="modal">&times;
+                                                    </button>
+                                                </div>
+
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Chọn nhân viên</th>
+
+                                                            <th>Tên nhân viên</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+
+                                                            <%--<c:forEach var="item2"  items="${model2.listResult}">--%>
+                                                            <%--<td><input class="form-check-input" type="checkbox"></td>--%>
+
+                                                            <%--<td>${item.name}</td>--%>
+
+                                                            <%--</c:forEach>--%>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger"
+                                                            data-dismiss="modal">Đóng
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                     <ul class="pagination" id="pagination"></ul>
+                                    <input type="hidden" value="" id="ref" name="ref"/>
                                     <input type="hidden" value="" id="page" name="page"/>
                                     <input type="hidden" value="" id="maxPageItem" name="maxPageItem"/>
                                     <input type="hidden" value="" id="sortName" name="sortName"/>
                                     <input type="hidden" value="" id="sortBy" name="sortBy"/>
-                                    <input type="hidden" value="" id="type" name="type"/>
+
                                 </div>
                             </div>
                         </div>
@@ -171,16 +176,16 @@
     var limit = 2;
     $(function () {
         window.pagObj = $('#pagination').twbsPagination({
-            totalPages: totalPages,
-            visiblePages: 10,
-            startPage: currentPage,
+            totalPages: totalPages,       // tổng trang
+            visiblePages: 5,              // số trang hiển thị trên thanh phân trang
+            startPage: currentPage,       // trang hiện tại
             onPageClick: function (event, page) {
                 if (currentPage != page) {
-                    $('#maxPageItem').val(limit);
+                    $('#maxPageItem').val(totalPages);
                     $('#page').val(page);
-                    $('#sortName').val('title');
+                    $('#sortName').val('name');
                     $('#sortBy').val('desc');
-                    $('#type').val('list');
+                    $('#ref').val('list');
                     $('#formSubmit').submit();
                 }
             }

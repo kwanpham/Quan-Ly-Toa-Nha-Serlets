@@ -28,6 +28,7 @@ public class BuildingService implements IBuildingService {
     public BuildingModel save(BuildingModel buildingModel) {
          buildingModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
          buildingModel.setCreatedBy("Admin");
+        buildingModel.setTableName("building");
          Long buildingId = buildingDAO.save(buildingModel);
          return buildingDAO.findOne(buildingId);
     }
