@@ -40,6 +40,8 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     private List<UserModel> users;
     private String type ;
 
+    public static final String tableName = "building";
+
     public enum BuildingTypes {
 
         TANGTRET("tang_tret" , "Tầng trệt"),

@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
   Created by IntelliJ IDEA.
   User: MyPC
@@ -77,15 +77,17 @@
                                         <tbody>
                                         <c:forEach var="item" items="${model.listResult}">
                                             <tr>
-                                                <td><input type="checkbox" class="check-box-element" id="checkbox_${item.id}" value="${item.id}"/></td>
-                                                <td><fmt:formatDate value="${item.createdDate}" pattern="MM/dd/yyyy"/></td>
+                                                <td><input type="checkbox" class="check-box-element"
+                                                           id="checkbox_${item.id}" value="${item.id}"/></td>
+                                                <td><fmt:formatDate value="${item.createdDate}"
+                                                                    pattern="MM/dd/yyyy"/></td>
                                                 <td>${item.name}</td>
                                                 <td>${item.street}</td>
                                                 <td>${item.managerName}</td>
                                                 <td>${item.managerPhone}</td>
                                                 <td>${item.buildingArea}</td>
-                                                <td>${item.rentArea}</td>
-                                                <td>${item.costRent}</td>
+                                                <td>${item.areaDescription}</td>
+                                                <td>${item.costDescription}</td>
                                                 <td>${item.serviceCost}</td>
                                                 <td>${item.commission}</td>
                                                 <td>
@@ -98,14 +100,17 @@
                                                             class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                     </a>
 
-                                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                                            data-target="#myModal"><span class="glyphicon glyphicon-user"></span>
+                                                    <button type="button" class="btn btn-sm btn-primary"
+                                                            data-toggle="modal"
+                                                            data-target="#myModal" value="${item.id}">
+                                                        <span class="glyphicon glyphicon-user"></span>
                                                     </button>
                                                 </td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
                                     </table>
+
 
                                     <!-- The Modal -->
                                     <div class="modal fade" id="myModal">
@@ -133,12 +138,12 @@
                                                         <tbody>
                                                         <tr>
 
-                                                            <%--<c:forEach var="item2"  items="${model2.listResult}">--%>
-                                                            <%--<td><input class="form-check-input" type="checkbox"></td>--%>
+                                                            <c:forEach var="item2" items="${model2.listResult}">
+                                                            <td><input class="form-check-input" type="checkbox"></td>
 
-                                                            <%--<td>${item.name}</td>--%>
+                                                            <td>${item.name}</td>
 
-                                                            <%--</c:forEach>--%>
+                                                            </c:forEach>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -153,6 +158,9 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <%--end modal--%>
+
                                     <ul class="pagination" id="pagination"></ul>
                                     <input type="hidden" value="" id="ref" name="ref"/>
                                     <input type="hidden" value="" id="page" name="page"/>
@@ -167,10 +175,15 @@
                 </div>
             </div>
         </div>
+
     </form>
+    <%--end form--%>
 </div>
+
 <!-- /.main-content -->
 <script>
+
+    // phân trnag
     var totalPages = ${model.totalPage};
     var currentPage = ${model.page};
     var limit = 2;
@@ -191,6 +204,9 @@
             }
         });
     });
+
+
+
 </script>
 </body>
 </html>

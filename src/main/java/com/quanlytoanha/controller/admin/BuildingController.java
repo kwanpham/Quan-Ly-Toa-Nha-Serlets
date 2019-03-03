@@ -25,10 +25,10 @@ import java.io.IOException;
 public class BuildingController extends HttpServlet {
 
     private BuildingModel model;
-    private IBuildingService buildingService;
+
     private String view = "";
 
-
+    private IBuildingService buildingService;
     private IUserService userService;
 
 
@@ -76,7 +76,7 @@ public class BuildingController extends HttpServlet {
     }
 
     private void showListBuilding(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BuildingModel model = FormUtil.toModel(BuildingModel.class , request);
+
         Pageble pageble = new PageRequest(model.getPage(), model.getMaxPageItem(),
                 new Sorter(model.getSortName(), model.getSortBy()));
 
@@ -84,13 +84,14 @@ public class BuildingController extends HttpServlet {
         model.setTotalItem(buildingService.getTotalItem());
         model.setTotalPage((int) Math.ceil((double) model.getTotalItem() / model.getMaxPageItem()));
         request.setAttribute(SystemConstant.MODEL, model);
+        request.setAttribute(SystemConstant.USER , userService.findAll());
         view = "views/admin/listbuilding.jsp";
 
     }
 
     private void addBuilding(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        BuildingModel temp = new BuildingModel();
+
         request.setAttribute("districts" , buildingService.findAllDistrict());
         view = "views/admin/addbuilding.jsp";
 

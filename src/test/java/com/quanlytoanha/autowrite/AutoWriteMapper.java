@@ -43,8 +43,9 @@ public class AutoWriteMapper {
                     String type = setType(list.get(i).getType().toString());
                     String str = list.get(i).getName();
                     String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
+                    System.out.println(list.get(i).getType().toString());
 
-                    System.out.println(StringUtils.uncapitalize(aClazz.getSimpleName()) + ".set" + cap + "(rs.get" + type + "(\"" + column + "\"));");
+                    //System.out.println(StringUtils.uncapitalize(aClazz.getSimpleName()) + ".set" + cap + "(rs.get" + type + "(\"" + column + "\"));");
                     sqlField.remove(j);
                     break;
                 }

@@ -79,4 +79,10 @@ public class Test {
 
     }
 
+    @org.testng.annotations.Test
+    public void testGetFinal() throws NoSuchFieldException, IllegalAccessException {
+        String tableName = BuildingModel.class.getField("tableName").get(null).toString();
+        System.out.println(tableName);
+    }
+
 }

@@ -6,7 +6,7 @@ public class RoleModel extends AbstractModel<RoleModel> {
     private String name;
     private int status;
 
-
+    public static final String tableName = "role";
 
 
     public String getName() {

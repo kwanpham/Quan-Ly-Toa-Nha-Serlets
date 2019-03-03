@@ -9,6 +9,8 @@ public class UserModel extends AbstractModel<UserModel> {
     private int status;
     private long roleId;
 
+    public static final String tableName = "user";
+
 
     public long getUserId() {
         return userId;

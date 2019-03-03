@@ -6,6 +6,7 @@ import com.quanlytoanha.paging.Pageble;
 import java.util.List;
 
 public interface IBuildingService {
+
     BuildingModel save(BuildingModel buildingModel);
 
     BuildingModel update(BuildingModel updateModel);
@@ -20,7 +21,7 @@ public interface IBuildingService {
 
     List<DistrictModel> findAllDistrict();
 
-    DistrictModel findByBuildingId(long id);
+
 
 
 

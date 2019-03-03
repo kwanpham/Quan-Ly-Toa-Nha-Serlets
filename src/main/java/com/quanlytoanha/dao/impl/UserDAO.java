@@ -12,14 +12,14 @@ public class UserDAO extends AbsstractDAO<UserModel> implements IUserDAO {
     @Override
     public UserModel findOne(Long id) {
         String sql = "SELECT * FROM user WHERE id = ?";
-        List<UserModel> user = query(sql, new UserMapper(), id);
+        List<UserModel> user = query(sql, UserModel.class, id);
         return user.isEmpty() ? null : user.get(0);
     }
 
     @Override
     public List<UserModel> findByRoleId(long roleId) {
         String sql = "SELECT * FROM user WHERE roleid = ?";
-        return query(sql, new UserMapper(), roleId);
+        return query(sql, UserModel.class, roleId);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class UserDAO extends AbsstractDAO<UserModel> implements IUserDAO {
     @Override
     public List<UserModel> findAll() {
         String sql = "SELECT * FROM user";
-        return query(sql , new UserMapper() );
+        return query(sql , UserModel.class );
     }
 
     @Override
@@ -56,7 +56,7 @@ public class UserDAO extends AbsstractDAO<UserModel> implements IUserDAO {
     @Override
     public UserModel findByUserNameAndPasswordAndStatus(String userName, String password, Integer status) {
         String sql = "select * from user where username = ? , password = ? , status = ? ";
-        return  query(sql , new UserMapper() , userName , password ,status).get(0);
+        return  query(sql , UserModel.class , userName , password ,status).get(0);
     }
 
 

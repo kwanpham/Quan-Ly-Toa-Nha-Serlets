@@ -44,7 +44,8 @@ public class BuildingDAO extends AbsstractDAO<BuildingModel> implements IBuildin
     @Override
     public BuildingModel findOne(long id) {
         String sql = "select * from building where id = ?" ;
-        return query(sql, new BuildingMapper(), id).get(0);
+        //return query(sql, new BuildingMapper(), id).get(0);
+        return query(sql , BuildingModel.class , id).get(0);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class BuildingDAO extends AbsstractDAO<BuildingModel> implements IBuildin
         if (pageble.getOffset() != null && pageble.getLimit() != null) {
             sql.append(" LIMIT " + pageble.getOffset() + ", " + pageble.getLimit() + "");
         }
-        return query(sql.toString(), new BuildingMapper());
+        return query(sql.toString(), BuildingModel.class);
     }
 
 

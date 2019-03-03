@@ -22,9 +22,13 @@ public class UserService implements IUserService {
         return userDAO.findByUserNameAndPasswordAndStatus(userName , password , status);
     }
 
+    @Override
     public List<UserModel> findAll(){
         return userDAO.findAll();
     }
+
+
+
 
 
 }

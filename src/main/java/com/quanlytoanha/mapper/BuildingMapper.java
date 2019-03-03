@@ -41,9 +41,6 @@ public class BuildingMapper implements RowMapper<BuildingModel> {
             buildingModel.setLink(rs.getString("link"));
             buildingModel.setLocation(rs.getString("location"));
             buildingModel.setImage(rs.getString("image"));
-
-
-
             buildingModel.setCreatedDate(rs.getTimestamp("createdDate"));
             buildingModel.setModifiedDate(rs.getTimestamp("modifiedDate"));
             buildingModel.setCreatedBy(rs.getString("createdBy"));

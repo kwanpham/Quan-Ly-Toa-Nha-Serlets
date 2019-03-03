@@ -3,10 +3,13 @@ package com.quanlytoanha.dao.impl;
 import com.quanlytoanha.dao.GenericDAO;
 import com.quanlytoanha.mapper.RowMapper;
 import com.quanlytoanha.model.AbstractModel;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import org.apache.commons.lang3.ArrayUtils;
 
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.*;
 
@@ -50,7 +53,7 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
             assert connection != null;
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            Object[] parameters = autoGetValueFromModel(model , model.getTableName());
+            Object[] parameters = autoGetValueFromModel(model);
             setParameter(statement, parameters);
             System.out.println(statement.toString());
             statement.executeUpdate();
@@ -67,74 +70,27 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
+        } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e2) {
-                e2.printStackTrace();
-            }
+            closeAll(connection, statement, resultSet);
+
         }
         return 0;
     }
 
     @Override
-    public List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
-        List<T> results = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = getConnection();
-            statement = connection.prepareStatement(sql);
-            setParameter(statement, parameters);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                results.add(rowMapper.mapRow(resultSet));
-            }
-            return results;
-        } catch (SQLException | NullPointerException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    @Override
-    public  void update(String sql, T model) {
+    public void update(String sql, T model) {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = getConnection();
             connection.setAutoCommit(false);
-            statement = connection.prepareStatement(sql);
-            Object[] parameters = autoGetValueFromModel(model , model.getTableName());
-            parameters = ArrayUtils.add(parameters , model.getId());
+            statement = connection.prepareStatement(sql);        // statement tính được số parameters khi truyền dấu '?'
+            Object[] parameters = autoGetValueFromModel(model);
+            parameters = ArrayUtils.add(parameters, model.getId());  // thêm id vào cuối cùng "where id = ? "
             setParameter(statement, parameters);
+            System.out.println(statement.toString());
             statement.executeUpdate();
             connection.commit();
             System.out.println("Update thanh cong");
@@ -148,22 +104,11 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException e2) {
-                e2.printStackTrace();
-            }
+            closeAll(connection, statement, null);
         }
     }
 
-
-
-    public void delete(String sql , Object... parameters) {
+    public void delete(String sql, Object... parameters) {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -174,7 +119,7 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
             statement.executeUpdate();
             connection.commit();
             System.out.println("Delete thanh cong");
-        } catch (SQLException e){
+        } catch (SQLException e) {
             try {
                 connection.rollback();
             } catch (SQLException e1) {
@@ -182,20 +127,9 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
             }
             e.printStackTrace();
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException e2) {
-                e2.printStackTrace();
-            }
+            closeAll(connection, statement, null);
         }
     }
-
-
 
     @Override
     public int count(String sql, Object... parameters) {
@@ -216,19 +150,65 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
             e.printStackTrace();
             return 0;
         } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            closeAll(connection, statement, resultSet);
+        }
+    }
+
+    @Override
+    public List<T> queryOld(String sql, RowMapper<T> rowMapper, Object... parameters) {
+        List<T> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
+            this.setParameter(statement, parameters);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                results.add(rowMapper.mapRow(resultSet));
             }
+
+            return results;
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            closeAll(connection, statement, resultSet);
+        }
+    }
+
+
+    public List<T> query(String sql, Class<T> tClass, Object... parameters) {
+        List<T> results;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
+            this.setParameter(statement, parameters);
+            resultSet = statement.executeQuery();
+
+            results = autoMappingModel(resultSet, tClass);
+            return results;
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            closeAll(connection, statement, resultSet);
+        }
+    }
+
+
+    private void closeAll(Connection conn, Statement sta, ResultSet rs) {
+        try {
+            conn.close();
+            sta.close();
+            if (rs != null)
+                rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -246,6 +226,8 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
                     statement.setInt(index, (Integer) parameter);
                 } else if (parameter instanceof Timestamp) {
                     statement.setTimestamp(index, (Timestamp) parameter);
+                } else if (parameter instanceof Double) {
+                    statement.setDouble(index, (Double) parameter);
                 } else {
                     statement.setNull(index, Types.NULL);
                 }
@@ -257,63 +239,38 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
         }
     }
 
-    public Class<Long> typeof(final long expr) {
-        return Long.TYPE;
-    }
 
+    //lấy tên tất cả column trong 1 bảng
     private List<String> getAllColumnName(String table) {
         Connection connection = getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("select *from " + table);
-            ResultSet rs = statement.executeQuery();
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-
-            int count = rsmd.getColumnCount();
-
             List<String> listColumNames = new ArrayList<>();
-            for (int i = 1; i <= count; i++) {
-                listColumNames.add(rsmd.getColumnName(i));
+            DatabaseMetaData metadata = connection.getMetaData();
+            ResultSet resultSet = metadata.getColumns(null, null, table, null);
+
+            while (resultSet.next()) {
+                String name = resultSet.getString("COLUMN_NAME");
+                listColumNames.add(name);
 
             }
-
-            //System.out.println(listColumNames.toString());
             return listColumNames;
 
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
             return null;
         }
 
     }
 
-    protected String autoWriteUpdateSQL(String tableName) {
-        List<String> listColumnName = getAllColumnName(tableName);
-        int count = listColumnName.size();
-        StringBuilder sql = new StringBuilder("update " + tableName + " set ");
-        for (int i = 1; i < count; i++) {
-            if (i == count-1) {
-                sql.append(listColumnName.get(i) + " = ?  ");
-            } else {
-                sql.append(listColumnName.get(i) + " = ? , ");
-            }
-        }
-        sql.append(" where id = ? ");
-        System.out.println(sql.toString());
-        return sql.toString();
-
-
-    }
-
-    protected String autoWriteInsertSQL(String tableName) {
+    public String autoWriteInsertSQL(String tableName) {
 
         List<String> listColumnName = getAllColumnName(tableName);
         int count = listColumnName.size();
         StringBuilder sql = new StringBuilder(" insert into " + tableName + " (  ");
         for (int i = 1; i < count; i++) {
 
-            if (i == count-1) {
+            if (i == count - 1) {
                 sql.append(listColumnName.get(i) + " , ");
                 sql.delete(sql.length() - 2, sql.length());
                 sql.append(" )");
@@ -327,7 +284,7 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
 
         for (int i = 1; i < count; i++) {
 
-            if (i == count-1) {
+            if (i == count - 1) {
                 sql.append("? ) ");
             } else {
                 sql.append("?, ");
@@ -337,34 +294,58 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
         return sql.toString();
     }
 
-    private  Object[] autoGetValueFromModel(T model, String tableName) throws IllegalArgumentException,
-            IllegalAccessException, NoSuchFieldException, SecurityException {
 
-        Class<T> aClazz = (Class<T>) model.getClass();
-        List<Object> objects = new ArrayList<>();
-        List<String> sqlField = getAllColumnName(tableName);
+    public String autoWriteUpdateSQL(String tableName) {
+        List<String> listColumnName = getAllColumnName(tableName);
+        int count = listColumnName.size();
+        StringBuilder sql = new StringBuilder("update " + tableName + " set ");
+        for (int i = 1; i < count; i++) {
+            if (i == count - 1) {
+                sql.append(listColumnName.get(i) + " = ?  ");
+            } else {
+                sql.append(listColumnName.get(i) + " = ? , ");
+            }
+        }
+        sql.append(" where id = ? ");
+        System.out.println(sql.toString());
+        return sql.toString();
 
+    }
+
+
+    // lấy tên tất cả các field trong 1 model
+    private List<Field> getAllFieldFromModel(Class<T> aClazz) {
         Field private_nameFieldChildClass[] = aClazz.getDeclaredFields();
         Field private_nameFieldSuperClass[] = aClazz.getSuperclass().getDeclaredFields();
         List<Field> listField = new LinkedList<>(Arrays.asList(private_nameFieldChildClass));
-        List<Field> list1 = new LinkedList<>(Arrays.asList(private_nameFieldSuperClass));
-        listField.addAll(list1);
+        List<Field> listFieldSuperClass = new LinkedList<>(Arrays.asList(private_nameFieldSuperClass));
+        listField.addAll(listFieldSuperClass);
+        return listField;
+    }
 
-        int legth = listField.size();
+    // Lất tất cả value có trong field của model đẻ thực hiên câu lệnh insert , update
+    private Object[] autoGetValueFromModel(T model) throws IllegalArgumentException,
+            IllegalAccessException, NoSuchFieldException, SecurityException {
 
-        for (int i = 0; i < legth; i++) {
-            listField.get(i).setAccessible(true);
-            for (int j = 1; j < sqlField.size(); j++) {
-                if (listField.get(i).getName().equals(sqlField.get(j))) {
-                    Object temp = listField.get(i).get(model);
+        List<Field> listField = this.getAllFieldFromModel((Class<T>) model.getClass());
+        List<String> listColName = this.getAllColumnName(model.getClass().getField("tableName").get(null).toString());
+
+        List<Object> objects = new ArrayList<>();
+
+        for (String colName : listColName) {
+
+            if (colName.equals("id"))
+                continue;
+
+            for (Field field : listField) {
+                if (colName.equals(field.getName())) {
+                    field.setAccessible(true);
+                    Object temp = field.get(model);
                     if (temp != null) {
                         objects.add(temp);
                     } else {
-
-                        objects.add(null);
+                        objects.add(colName);
                     }
-
-                    sqlField.remove(j);
                     break;
                 }
             }
@@ -373,5 +354,84 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
         return objects.toArray();
     }
 
+    private List<T> autoMappingModel(ResultSet rs, @NotNull Class<T> aClazz) {
 
+        List<T> results = new ArrayList<>();
+
+        List<Field> listField = this.getAllFieldFromModel(aClazz);
+
+        List<String> listColumnName = null;
+
+        try {
+            listColumnName = this.getAllColumnName(aClazz.getField("tableName").get(null).toString());
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        Map<String, Field> fieldMap = new HashMap<>();
+
+
+        for (String colName : listColumnName) {
+            for (Field field : listField) {
+                if (colName.equals(field.getName())) {
+                    fieldMap.put(colName, field);
+                    break;
+                }
+            }
+        }
+
+        try {
+            while (rs.next()) {
+                T model = aClazz.getConstructor().newInstance();
+                for (Map.Entry<String, Field> entity : fieldMap.entrySet()) {
+                    mapResultSetToModel(entity.getKey(), entity.getValue(), model, rs);
+                }
+                results.add(model);
+            }
+
+            return results;
+        } catch (SQLException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |
+                InstantiationException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void mapResultSetToModel(String colName, Field field, T model, ResultSet rs) throws SQLException, IllegalAccessException {
+        field.setAccessible(true);
+        switch (field.getType().getTypeName()) {
+            case "int":
+                field.set(model, rs.getInt(colName));
+                break;
+            case "java.lang.Integer":
+                field.set(model, rs.getInt(colName));
+                break;
+            case "java.lang.Double":
+                field.set(model, rs.getDate(colName));
+                break;
+            case "double":
+                field.set(model, rs.getDouble(colName));
+                break;
+            case "java.lang.Long":
+                field.set(model, rs.getLong(colName));
+                break;
+            case "long":
+                field.set(model, rs.getLong(colName));
+                break;
+            case "java.lang.String":
+                field.set(model, rs.getString(colName));
+                break;
+            case "java.sql.Timestamp":
+                field.set(model, rs.getTimestamp(colName));
+                break;
+            default:
+                break;
+
+        }
+
+    }
+
+    //    public Class<Long> typeof(final long expr) {
+//        return Long.TYPE;
+//    }
 }

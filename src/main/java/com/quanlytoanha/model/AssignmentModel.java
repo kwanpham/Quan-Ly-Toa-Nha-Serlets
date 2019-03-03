@@ -4,6 +4,8 @@ public class AssignmentModel extends AbstractModel<AssignmentModel>  {
 
     private long userId , buildingId ;
 
+    public static final String tableName = "assignment";
+
 
     public long getUserId() {
         return userId;

@@ -16,19 +16,17 @@ public class BuildingService implements IBuildingService {
 
     private IBuildingDAO buildingDAO;
 
-    private IDistrictDAO districtDAO;
+
 
     public BuildingService() {
         buildingDAO = new BuildingDAO();
-
-        districtDAO = new DistrictDAO();
     }
 
     @Override
     public BuildingModel save(BuildingModel buildingModel) {
          buildingModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
          buildingModel.setCreatedBy("Admin");
-        buildingModel.setTableName("building");
+        //buildingModel.setTableName("building");
          Long buildingId = buildingDAO.save(buildingModel);
          return buildingDAO.findOne(buildingId);
     }
@@ -47,7 +45,6 @@ public class BuildingService implements IBuildingService {
     @Override
     public void delete(long[] ids) {
         for (long id: ids) {
-
             buildingDAO.delete(id);
         }
     }
@@ -73,10 +70,6 @@ public class BuildingService implements IBuildingService {
         return districtDAO.findAll();
     }
 
-    @Override
-    public DistrictModel findByBuildingId(long id) {
-        return null;
-    }
 
 
 }

@@ -14,7 +14,7 @@ public class DistrictDAO extends AbsstractDAO<DistrictModel> implements IDistric
     @Override
     public DistrictModel findOne(Long id) {
         String sql = "SELECT * FROM district WHERE districtid = ?";
-        List<DistrictModel> district = query(sql, new DistrictMapper(), id);
+        List<DistrictModel> district = query(sql, DistrictModel.class, id);
         return district.isEmpty() ? null : district.get(0);
     }
 
@@ -22,7 +22,7 @@ public class DistrictDAO extends AbsstractDAO<DistrictModel> implements IDistric
     @Override
     public List<DistrictModel> findAll() {
         String sql = "SELECT * FROM District";
-        return query(sql , new DistrictMapper() );
+        return query(sql , DistrictModel.class );
     }
 
 

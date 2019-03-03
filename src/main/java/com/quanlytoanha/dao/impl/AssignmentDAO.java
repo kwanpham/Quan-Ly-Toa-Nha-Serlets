@@ -27,12 +27,12 @@ public class AssignmentDAO extends AbsstractDAO<AssignmentModel> implements IAss
     @Override
     public List<AssignmentModel> findByBuildingId(long buildingId) {
         String sql = "select *from assignment where buildingId = ?";
-        return query(sql , new AssignmentMapper() , buildingId);
+        return query(sql , AssignmentModel.class , buildingId);
     }
 
     @Override
     public List<AssignmentModel> findByUserId(long userId) {
         String sql = "select *from assignment where userId = ?";
-        return query(sql , new AssignmentMapper() , userId);
+        return query(sql , AssignmentModel.class , userId);
     }
 }

@@ -16,7 +16,7 @@ public class RoleDAO extends AbsstractDAO<RoleModel> implements IRoleDAO {
     @Override
     public RoleModel findOne(Long id) {
         String sql = "SELECT * FROM user WHERE id = ?";
-        List<RoleModel> role = query(sql, new RoleMapper(), id);
+        List<RoleModel> role = query(sql, RoleModel.class, id);
         return role.isEmpty() ? null : role.get(0);
     }
 
@@ -44,7 +44,7 @@ public class RoleDAO extends AbsstractDAO<RoleModel> implements IRoleDAO {
     @Override
     public List<RoleModel> findAll() {
         String sql = "select *from role";
-        List<RoleModel> list = query(sql , new RoleMapper());
+        List<RoleModel> list = query(sql , RoleModel.class);
         return list;
     }
 

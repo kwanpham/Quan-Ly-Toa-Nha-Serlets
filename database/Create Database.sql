@@ -59,7 +59,7 @@ CREATE TABLE building (
   timeContract     VARCHAR(255),
   timeDecorator    VARCHAR(255),
   managerName      VARCHAR(255),
-  mamagerPhone     VARCHAR(30),
+  managerPhone     VARCHAR(30),
   commission       VARCHAR(255),
   note             VARCHAR(255),
   link             VARCHAR(255),

@@ -291,10 +291,10 @@
 
         e.preventDefault();    //ngắn chặn hành động mặc định của sự kiện
         var checkBoxValue = [];
-        var data = {};
+        var dataTemp = {};
         var formData = $('#formSubmit').serializeArray();
         $.each(formData, function (i, v) {
-            data["" + v.name + ""] = v.value;
+            dataTemp["" + v.name + ""] = v.value;
         });
 
         $("input:checkbox[name=buildingTypes]:checked").each(function () {
@@ -303,20 +303,20 @@
 
         //data["buildingTypes"] = checkBoxValue;
 
-        var data1 = JSON.stringify(data);
+        var data = JSON.stringify(dataTemp);
 
         console.log(data1);
 
         var id = $('#id').val();
         if (id === "") {
-            addNew(data);
+            addBuilding(data);
         } else {
-            updateNew(data);
+            updateBuilding(data);
         }
 
     });
 
-    function addNew(data1) {
+    function addBuilding(data1) {
         $.ajax({
             url: '${APIurl}',
             type: 'POST',
@@ -331,7 +331,7 @@
             }
         });
     }
-    function updateNew(data1) {
+    function updateBuilding(data1) {
         $.ajax({
             url: '${APIurl}',
             type: 'PUT',

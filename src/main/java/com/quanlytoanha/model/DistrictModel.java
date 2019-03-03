@@ -4,6 +4,8 @@ public class DistrictModel extends AbstractModel<DistrictModel> {
 
     private String name , code;
 
+    public static final String tableName = "district";
+
     public String getName() {
         return name;
     }

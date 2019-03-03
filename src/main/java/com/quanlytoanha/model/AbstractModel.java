@@ -21,7 +21,6 @@ public class AbstractModel<T> {
     private String sortBy;
     private String alert;
     private String message;
-    private String tableName;
     private String ref;
 
 
@@ -145,13 +144,6 @@ public class AbstractModel<T> {
         this.message = message;
     }
 
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
 
     public String getRef() {
         return ref;

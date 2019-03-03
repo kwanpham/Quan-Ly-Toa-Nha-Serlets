@@ -42,4 +42,6 @@ public class BuildingAPI extends HttpServlet {
         buildingModel = buildingService.update(buildingModel);
         mapper.writeValue(resp.getOutputStream() , buildingModel);
     }
+
+
 }
