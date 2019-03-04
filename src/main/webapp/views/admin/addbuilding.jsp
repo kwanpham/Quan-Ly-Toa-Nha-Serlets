@@ -30,7 +30,7 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Quận</label>
             <div class="col-sm-11">
-                <select class="form-control" id="district" name="districtCode" ">
+                <select class="form-control" id="district" name="districtCode">
                     <c:if test="${empty model.districtCode}">
                         <option value="">Chọn quận</option>
                         <c:forEach var="item" items="${districts}">
@@ -40,7 +40,8 @@
 
                     <c:if test="${not empty model.districtCode }">
                         <c:forEach var="item" items="${districts}">
-                            <option value="${item.code}" <c:if test="${item.code == model.districtCode}">selected="selected"</c:if> >
+                            <option value="${item.code}"
+                                    <c:if test="${item.code == model.districtCode}">selected="selected"</c:if> >
                                     ${item.name}
                             </option>
                         </c:forEach>
@@ -100,7 +101,8 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Hạng</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="levelBuilding" name="levelBuilding" value="${model.levelBuilding}"/>
+                <input type="text" class="form-control" id="levelBuilding" name="levelBuilding"
+                       value="${model.levelBuilding}"/>
             </div>
         </div>
 
@@ -215,7 +217,7 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">SĐT quản lý</label>
             <div class="col-sm-11">
-                <input type="text" class="form-control" id="mamagerPhone" name="mamagerPhone"
+                <input type="text" class="form-control" id="managerPhone" name="managerPhone"
                        value="${model.managerPhone}"/>
             </div>
         </div>
@@ -223,24 +225,49 @@
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Phí môi giới</label>
             <div class="col-sm-11">
-                <input type="number" class="form-control" id="commission" name="commission" value="${model.commission}"/>
+                <input type="number" class="form-control" id="commission" name="commission"
+                       value="${model.commission}"/>
             </div>
         </div>
 
-        <%--<div class="form-group">--%>
-            <%--<label class="col-sm-1 control-label no-padding-right">Loại sản phẩm</label>--%>
-            <%--<div class="col-sm-11">--%>
-                <%--<c:forEach var="item" items="${buildingtypes}">--%>
-                    <%--<div class="form-check">--%>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right">Loại sản phẩm</label>
+            <div class="col-sm-11">
 
-                            <%--<input type="checkbox" class="form-check-input"  name="buildingTypes"--%>
-                                   <%--value="${item.buildingTypeId}">${item.name}--%>
+                <c:if test="${empty model.id}">
+                    <c:forEach var="type" items="${buildingTypes}">
+                        <div class="form-check">
 
-                    <%--</div>--%>
-                <%--</c:forEach>--%>
+                            <input type="checkbox" class="form-check-input" name="buildingTypes"
+                                   value="${type.key}">
+                                ${type.value}
 
-            <%--</div>--%>
-        <%--</div>--%>
+                        </div>
+                    </c:forEach>
+                </c:if>
+
+                <c:if test="${not empty model.id}">
+                    <c:forEach var="type" items="${buildingTypes}">
+                        <div class="form-check">
+
+                            <input type="checkbox" class="form-check-input" name="buildingTypes"
+                                   value="${type.key}"
+                            <c:forEach var="modelType" items="${model.buildingTypes}">
+                            <c:if test="${type.key == modelType}">
+                                   checked
+                            </c:if>
+
+                            </c:forEach>
+                            >
+                                ${type.value}
+
+                        </div>
+                    </c:forEach>
+                </c:if>
+
+
+            </div>
+        </div>
 
 
         <div class="form-group">
@@ -301,14 +328,14 @@
             checkBoxValue.push($(this).val());
         });
 
-        //data["buildingTypes"] = checkBoxValue;
+        dataTemp["buildingTypes"] = checkBoxValue;
 
         var data = JSON.stringify(dataTemp);
 
-        console.log(data1);
+        console.log(data);
 
         var id = $('#id').val();
-        if (id === "") {
+        if (id == "") {
             addBuilding(data);
         } else {
             updateBuilding(data);
@@ -316,12 +343,12 @@
 
     });
 
-    function addBuilding(data1) {
+    function addBuilding(data) {
         $.ajax({
             url: '${APIurl}',
             type: 'POST',
             contentType: 'application/json',
-            data: data1,
+            data: data,
             dataType: 'json',
             success: function (result) {
                 console.log(result);
@@ -331,12 +358,12 @@
             }
         });
     }
-    function updateBuilding(data1) {
+    function updateBuilding(data) {
         $.ajax({
             url: '${APIurl}',
             type: 'PUT',
             contentType: 'application/json',
-            data: JSON.stringify(data),
+            data: data,
             dataType: 'json',
             success: function (result) {
                 console.log(result);

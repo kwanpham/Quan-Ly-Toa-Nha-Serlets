@@ -68,12 +68,6 @@ public class BuildingController extends HttpServlet {
 
     }
 
-    private void editBuilding(HttpServletRequest request, HttpServletResponse response) {
-
-        request.setAttribute("districts" , buildingService.findAllDistrict());
-        request.setAttribute(SystemConstant.MODEL , buildingService.findOne(model.getId()));
-        view = "views/admin/addbuilding.jsp";
-    }
 
     private void showListBuilding(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -91,10 +85,18 @@ public class BuildingController extends HttpServlet {
 
     private void addBuilding(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
+        request.setAttribute("buildingTypes" , buildingService.getBuildTypes());
         request.setAttribute("districts" , buildingService.findAllDistrict());
         view = "views/admin/addbuilding.jsp";
 
+    }
+
+    private void editBuilding(HttpServletRequest request, HttpServletResponse response) {
+
+        request.setAttribute("buildingTypes" , buildingService.getBuildTypes());
+        request.setAttribute("districts" , buildingService.findAllDistrict());
+        request.setAttribute(SystemConstant.MODEL , buildingService.findOne(model.getId()));
+        view = "views/admin/addbuilding.jsp";
     }
 
 }

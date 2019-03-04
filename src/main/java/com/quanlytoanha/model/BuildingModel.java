@@ -36,7 +36,7 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     private String link;
     private String location;
     private String image;
-    private String BuildingType;
+    private String[] buildingTypes;
     private List<UserModel> users;
     private String type ;
 
@@ -299,14 +299,14 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     }
 
 
-
-    public String getBuildingType() {
-        return BuildingType;
+    public String[] getBuildingTypes() {
+        return buildingTypes;
     }
 
-    public void setBuildingType(String buildingType) {
-        BuildingType = buildingType;
+    public void setBuildingTypes(String[] buildingTypes) {
+        this.buildingTypes = buildingTypes;
     }
+
 
     public List<UserModel> getUsers() {
         return users;

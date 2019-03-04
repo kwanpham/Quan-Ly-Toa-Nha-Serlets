@@ -344,7 +344,7 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
                     if (temp != null) {
                         objects.add(temp);
                     } else {
-                        objects.add(colName);
+                        objects.add(null);
                     }
                     break;
                 }

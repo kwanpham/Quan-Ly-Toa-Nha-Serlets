@@ -4,6 +4,7 @@ import com.quanlytoanha.model.*;
 import com.quanlytoanha.paging.Pageble;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IBuildingService {
 
@@ -12,6 +13,8 @@ public interface IBuildingService {
     BuildingModel update(BuildingModel updateModel);
 
     void delete(long[] ids);
+
+    Map<String , String> getBuildTypes();
 
     int getTotalItem();
 
