@@ -1,5 +1,6 @@
 package com.quanlytoanha.service;
 
+import com.quanlytoanha.builder.BuildingSearcher;
 import com.quanlytoanha.model.*;
 import com.quanlytoanha.paging.Pageble;
 
@@ -22,9 +23,7 @@ public interface IBuildingService {
 
     List<BuildingModel> findAll(Pageble pageble);
 
-    List<DistrictModel> findAllDistrict();
-
-
+    List<BuildingModel> findAll(BuildingSearcher builder , Pageble pageble);
 
 
 

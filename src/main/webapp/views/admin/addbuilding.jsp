@@ -108,19 +108,39 @@
 
 
         <div class="form-group">
-            <label class="col-sm-1 control-label no-padding-right">Diện tích thuê</label>
-            <div class="col-sm-11">
-                <input type="text" class="form-control" id="rentArea" name="rentArea" value="${model.rentArea}"/>
+            <div class="col-sm-12">
+                <hr size="5" color="blue">
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-1 control-label no-padding-right">Mô tả S</label>
-            <div class="col-sm-11">
-                <input type="text" class="form-control" id="areaDescription" name="areaDescription"
-                       value="${model.areaDescription}"/>
+        <div id="RentAreaForm">
+
+            <div class="form-group" id="rentArea">
+                <label class="col-sm-1 control-label no-padding-right">Diện tích thuê</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" name="rentArea" value="${model.rentArea}"/>
+                </div>
             </div>
+
+            <div class="form-group" id="areaDescription">
+                <label class="col-sm-1 control-label no-padding-right">Mô tả S</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" name="areaDescription"
+                           value="${model.areaDescription}"/>
+                </div>
+            </div>
+
+            <div class="form-group" id="line">
+                <div class="col-sm-12">
+                    <hr size="5" color="blue">
+                </div>
+            </div>
+
         </div>
+
+
+        <button type="button" id="btnAddRentArea" class="btn btn-primary">Thêm diện tích thuê</button>
+
 
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right">Giá thuê</label>
@@ -313,10 +333,19 @@
 <script>
 
 
+    $('#btnAddRentArea').click(function (e) {
+        $('#RentAreaForm').append($('#rentArea').clone());
+        $('#RentAreaForm').append($('#areaDescription').clone());
+        $('#RentAreaForm').append($('#line').clone());
+
+    })
+
     $('#btnAddOrUpdate').click(function (e) {
 
 
         e.preventDefault();    //ngắn chặn hành động mặc định của sự kiện
+        var rentArea = [];
+        var areaDescription = [];
         var checkBoxValue = [];
         var dataTemp = {};
         var formData = $('#formSubmit').serializeArray();
@@ -328,17 +357,28 @@
             checkBoxValue.push($(this).val());
         });
 
+        $("input[name=rentArea]").each(function () {
+            rentArea.push($(this).val());
+        })
+
+        $("input[name=areaDescription]").each(function () {
+            areaDescription.push($(this).val());
+        })
+
         dataTemp["buildingTypes"] = checkBoxValue;
+        dataTemp["rentArea"] = rentArea;
+        dataTemp["areaDescription"] = areaDescription;
 
         var data = JSON.stringify(dataTemp);
 
         console.log(data);
 
+
         var id = $('#id').val();
         if (id == "") {
             addBuilding(data);
         } else {
-            updateBuilding(data);
+           // updateBuilding(data);
         }
 
     });

@@ -1,5 +1,6 @@
 package com.quanlytoanha.service.impl;
 
+import com.quanlytoanha.builder.BuildingSearcher;
 import com.quanlytoanha.dao.*;
 import com.quanlytoanha.dao.impl.*;
 import com.quanlytoanha.enums.BuildingType;
@@ -7,7 +8,6 @@ import com.quanlytoanha.model.*;
 import com.quanlytoanha.paging.Pageble;
 import com.quanlytoanha.service.IBuildingService;
 
-import javax.inject.Inject;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +19,12 @@ public class BuildingService implements IBuildingService {
 
 
     private IBuildingDAO buildingDAO;
+    private IRentAreaDAO rentAreaDAO;
 
 
     public BuildingService() {
         buildingDAO = new BuildingDAO();
+        rentAreaDAO = new RentAreaDAO();
     }
 
     @Override
@@ -31,7 +33,19 @@ public class BuildingService implements IBuildingService {
         buildingModel.setCreatedBy("Admin");
         String type = String.join(",", buildingModel.getBuildingTypes());
         buildingModel.setType(type);
+
         Long buildingId = buildingDAO.save(buildingModel);
+
+       for (int i = 0; i<buildingModel.getRentArea().length ; i++){
+           RentAreaModel model = new RentAreaModel();
+           model.setBuildingId(buildingId);
+           model.setRentArea(buildingModel.getRentArea()[i]);
+           model.setAreaDescription(buildingModel.getAreaDescription()[i]);
+           model.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+           model.setCreatedBy("Admin");
+           rentAreaDAO.save(model);
+       }
+
         return buildingDAO.findOne(buildingId);
     }
 
@@ -45,6 +59,17 @@ public class BuildingService implements IBuildingService {
         String type = String.join(",", updateModel.getBuildingTypes());
         updateModel.setType(type);
         buildingDAO.update(updateModel);
+
+        for (int i = 0; i < updateModel.getRentArea().length ; i++){
+            RentAreaModel model = new RentAreaModel();
+            model.setBuildingId(updateModel.getId());
+            model.setRentArea(updateModel.getRentArea()[i]);
+            model.setAreaDescription(updateModel.getAreaDescription()[i]);
+            model.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+            model.setCreatedBy("Admin");
+            rentAreaDAO.update(model);
+        }
+
         return buildingDAO.findOne(updateModel.getId());
     }
 
@@ -84,10 +109,10 @@ public class BuildingService implements IBuildingService {
         return buildingDAO.findAll(pageble);
     }
 
+
     @Override
-    public List<DistrictModel> findAllDistrict() {
-        DistrictDAO districtDAO = new DistrictDAO();
-        return districtDAO.findAll();
+    public List<BuildingModel> findAll(BuildingSearcher builder, Pageble pageble) {
+        return null;
     }
 
 

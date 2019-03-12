@@ -44,7 +44,7 @@
             <b class="arrow"></b>
             <ul class="submenu">
                 <li>
-                    <a href='<c:url value="/admin-building?ref=list&page=1&maxPageItem=3&sortName=name&sortBy=desc"/>'>
+                    <a href='<c:url value="/admin-building?ref=list&page=1&sortName=name&sortBy=desc"/>'>
                         <i class="menu-icon fa fa-caret-right"></i>
                         Danh sách tòa nhà
                     </a>

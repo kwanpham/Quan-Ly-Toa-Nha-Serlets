@@ -1,5 +1,7 @@
 package com.quanlytoanha.controller.admin.api;
 
+import com.quanlytoanha.service.IAssignmentService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +14,8 @@ import java.io.IOException;
  */
 @WebServlet(urlPatterns = {"/api-admin-assignment"})
 public class AssignmentAPI extends HttpServlet {
+
+    private IAssignmentService assignmentService;
 
 
 

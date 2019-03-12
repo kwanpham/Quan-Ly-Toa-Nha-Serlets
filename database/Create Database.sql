@@ -4,8 +4,7 @@ CREATE TABLE role (
   createdDate  TIMESTAMP    NULL,
   modifiedDate TIMESTAMP    NULL,
   createdBy    VARCHAR(255) NULL,
-  modifiedBy   VARCHAR(255) NULL,
-  status       INT          NOT NULL
+  modifiedBy   VARCHAR(255) NULL
 );
 
 
@@ -37,7 +36,7 @@ CREATE TABLE district (
 CREATE TABLE building (
   id               BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name             VARCHAR(255),
-  districtId         VARCHAR(255),
+  districtCode     VARCHAR(255),
   ward             VARCHAR(255),
   street           VARCHAR(255),
   structure        VARCHAR(255),
@@ -45,8 +44,6 @@ CREATE TABLE building (
   buildingArea     DOUBLE,
   direction        VARCHAR(255),
   levelBuilding    VARCHAR(255),
-  rentArea         TEXT,
-  areaDescription  VARCHAR(255),
   costRent         INT,
   costDescription  VARCHAR(255),
   serviceCost      VARCHAR(255),
@@ -70,6 +67,19 @@ CREATE TABLE building (
   modifiedDate     TIMESTAMP    NULL,
   createdBy        VARCHAR(255) NULL,
   modifiedBy       VARCHAR(255) NULL
+);
+
+CREATE TABLE rentarea (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  buildingId BIGINT ,
+  rentArea DOUBLE,
+  areaDescription  VARCHAR(255),
+  createdDate      TIMESTAMP    NULL,
+  modifiedDate     TIMESTAMP    NULL,
+  createdBy        VARCHAR(255) NULL,
+  modifiedBy       VARCHAR(255) NULL,
+  FOREIGN KEY (buildingId) REFERENCES building (id)
+
 );
 
 

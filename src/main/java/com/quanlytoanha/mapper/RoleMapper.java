@@ -12,7 +12,6 @@ public class RoleMapper implements RowMapper<RoleModel> {
             RoleModel roleModel = new RoleModel();
             roleModel.setId(rs.getLong("id"));
             roleModel.setName(rs.getString("name"));
-            roleModel.setStatus(rs.getInt("status"));
             roleModel.setCreatedDate(rs.getTimestamp("createdDate"));
             roleModel.setModifiedDate(rs.getTimestamp("modifiedDate"));
             roleModel.setCreatedBy(rs.getString("createdBy"));

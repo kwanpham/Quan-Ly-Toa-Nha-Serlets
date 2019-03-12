@@ -88,14 +88,6 @@ public class AbstractModel<T> {
         this.page = page;
     }
 
-    public int getMaxPageItem() {
-        return maxPageItem;
-    }
-
-    public void setMaxPageItem(int maxPageItem) {
-        this.maxPageItem = maxPageItem;
-    }
-
     public int getTotalPage() {
         return totalPage;
     }

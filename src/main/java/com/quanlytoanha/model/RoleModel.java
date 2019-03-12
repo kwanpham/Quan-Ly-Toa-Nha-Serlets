@@ -4,7 +4,6 @@ public class RoleModel extends AbstractModel<RoleModel> {
 
 
     private String name;
-    private int status;
 
     public static final String tableName = "role";
 
@@ -17,11 +16,4 @@ public class RoleModel extends AbstractModel<RoleModel> {
         this.name = name;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }

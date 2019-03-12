@@ -9,6 +9,20 @@ public class UserModel extends AbstractModel<UserModel> {
     private int status;
     private long roleId;
 
+    private String checked = "";
+
+    public String getChecked() {
+        return checked;
+    }
+
+    public void setChecked(String checked) {
+        this.checked = checked;
+    }
+
+    public static String getTableName() {
+        return tableName;
+    }
+
     public static final String tableName = "user";
 
 

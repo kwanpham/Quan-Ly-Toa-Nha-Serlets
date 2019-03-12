@@ -11,7 +11,7 @@ public interface IUserDAO extends GenericDAO<UserModel> {
 
     UserModel findOne(Long id);
 
-    List<UserModel> findByRoleId(long categoryId);
+    List<UserModel> findByRoleId(long roleId);
 
     Long save(UserModel userModel);
 

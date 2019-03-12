@@ -16,8 +16,6 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     private double buildingArea;
     private String direction;
     private String levelBuilding;
-    private String rentArea;
-    private String areaDescription;
     private int costRent;
     private String costDescription;
     private String serviceCost;
@@ -39,24 +37,11 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
     private String[] buildingTypes;
     private List<UserModel> users;
     private String type ;
+    private double[] rentArea;
+    private String[] areaDescription;
 
     public static final String tableName = "building";
 
-    public enum BuildingTypes {
-
-        TANGTRET("tang_tret" , "Tầng trệt"),
-        NGUYENCAN("nguyen_can" , "Nguyên căn"),
-        NOITHAT("noi_that" , "Nội thất");
-
-        private String code , name ;
-
-        BuildingTypes(String code, String name) {
-            this.code = code;
-            this.name = name;
-        }
-
-
-    }
 
     public String getName() {
         return name;
@@ -130,21 +115,6 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.levelBuilding = levelBuilding;
     }
 
-    public String getRentArea() {
-        return rentArea;
-    }
-
-    public void setRentArea(String rentArea) {
-        this.rentArea = rentArea;
-    }
-
-    public String getAreaDescription() {
-        return areaDescription;
-    }
-
-    public void setAreaDescription(String areaDescription) {
-        this.areaDescription = areaDescription;
-    }
 
     public int getCostRent() {
         return costRent;
@@ -307,12 +277,27 @@ public class BuildingModel extends AbstractModel<BuildingModel> {
         this.buildingTypes = buildingTypes;
     }
 
-
     public List<UserModel> getUsers() {
         return users;
     }
 
     public void setUsers(List<UserModel> users) {
         this.users = users;
+    }
+
+    public double[] getRentArea() {
+        return rentArea;
+    }
+
+    public void setRentArea(double[] rentArea) {
+        this.rentArea = rentArea;
+    }
+
+    public String[] getAreaDescription() {
+        return areaDescription;
+    }
+
+    public void setAreaDescription(String[] areaDescription) {
+        this.areaDescription = areaDescription;
     }
 }

@@ -9,5 +9,9 @@ public interface IUserService {
 
     List<UserModel> findAll();
 
+    List<UserModel> findByRoleId(long id);
+
+    List<UserModel> findUserAssignForBuilding(long roleId , long buildingId);
+
 }
 

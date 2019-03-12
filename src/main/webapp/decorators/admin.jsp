@@ -37,8 +37,8 @@
 				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
 		</a>
 	</div>
-	
-	
+
+
 	<script src="<c:url value='/template/admin/assets/js/bootstrap.min.js' />"></script>
 	<script src="<c:url value='/template/admin/assets/js/jquery-ui.custom.min.js' />"></script>
 	<script src="<c:url value='/template/admin/assets/js/jquery.ui.touch-punch.min.js' />"></script>

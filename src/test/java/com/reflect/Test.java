@@ -85,4 +85,9 @@ public class Test {
         System.out.println(tableName);
     }
 
+    @org.testng.annotations.Test
+    public void testArray() {
+        Field[] fields = BuildingModel.class.getDeclaredFields();
+    }
+
 }

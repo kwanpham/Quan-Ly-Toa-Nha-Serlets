@@ -1,6 +1,6 @@
 package com.quanlytoanha.dao;
 
-import com.quanlytoanha.model.AssignmentModel;
+import com.quanlytoanha.builder.BuildingSearcher;
 import com.quanlytoanha.model.BuildingModel;
 import com.quanlytoanha.paging.Pageble;
 
@@ -19,6 +19,8 @@ public interface IBuildingDAO extends GenericDAO<BuildingModel> {
     BuildingModel findOne(long id);
 
     List<BuildingModel> findAll(Pageble pageble);
+
+    List<BuildingModel> findAll(BuildingSearcher builder , Pageble pageble);
 
 
 }
