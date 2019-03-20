@@ -8,8 +8,7 @@ import com.quanlytoanha.model.AssignmentModel;
 import com.quanlytoanha.model.UserModel;
 import com.quanlytoanha.service.IUserService;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class UserService implements IUserService {
@@ -49,7 +48,6 @@ public class UserService implements IUserService {
             for (AssignmentModel assignmentModel : assignmentModels) {
                 if (userModel.getId() == assignmentModel.getUserId()){
                     userModel.setChecked("checked");
-
                 }
             }
         }

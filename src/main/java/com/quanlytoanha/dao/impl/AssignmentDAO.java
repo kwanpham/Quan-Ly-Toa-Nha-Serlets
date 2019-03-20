@@ -1,7 +1,7 @@
 package com.quanlytoanha.dao.impl;
 
 import com.quanlytoanha.dao.IAssignmentDAO;
-import com.quanlytoanha.mapper.AssignmentMapper;
+
 import com.quanlytoanha.model.AssignmentModel;
 
 import java.util.List;
@@ -14,7 +14,8 @@ public class AssignmentDAO extends AbsstractDAO<AssignmentModel> implements IAss
 
     @Override
     public long save(AssignmentModel model) {
-        String sql = autoWriteInsertSQL("assignment");
+        String sql = "insert into assignment (userId ,buildingId,createdDate,modifiedDate,createdBy,modifiedBy) values " +
+                "(? , ? , ? , ? , ? , ? ) ";
         return insert(sql, model);
     }
 

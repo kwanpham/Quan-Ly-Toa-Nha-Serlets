@@ -1,7 +1,6 @@
 package com.quanlytoanha.dao.impl;
 
 import com.quanlytoanha.dao.IDistrictDAO;
-import com.quanlytoanha.mapper.DistrictMapper;
 import com.quanlytoanha.model.DistrictModel;
 
 

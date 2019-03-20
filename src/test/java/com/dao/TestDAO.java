@@ -52,7 +52,7 @@ public class TestDAO {
     public void TestBuildingDAOFindOne() {
         BuildingDAO dao = new BuildingDAO();
 
-        BuildingModel model = dao.findOne(26);
+        //BuildingModel model = dao.findOne(26);
     }
 
     @Test

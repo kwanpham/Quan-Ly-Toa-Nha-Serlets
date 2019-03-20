@@ -1,14 +1,13 @@
 package com.quanlytoanha.controller.admin.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysql.cj.xdevapi.Type;
+
 import com.quanlytoanha.model.BuildingModel;
 import com.quanlytoanha.service.IBuildingService;
 import com.quanlytoanha.service.impl.BuildingService;
 import com.quanlytoanha.utils.HttpUtil;
 
 
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +26,7 @@ public class BuildingAPI extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         BuildingModel buildingModel = HttpUtil.of(request.getReader()).toModel(BuildingModel.class);
-
+        System.out.println(buildingModel.toString());
         buildingModel = buildingService.save(buildingModel);
         objectMapper.writeValue(response.getOutputStream() , buildingModel);
 
@@ -43,5 +42,14 @@ public class BuildingAPI extends HttpServlet {
         mapper.writeValue(resp.getOutputStream() , buildingModel);
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json");
+        BuildingModel model = HttpUtil.of(req.getReader()).toModel(BuildingModel.class);
+        buildingService.delete(model.getIds());
+        mapper.writeValue(resp.getOutputStream() , "{'statusDeleteBuiling' : 'delete success'}");
 
+    }
 }

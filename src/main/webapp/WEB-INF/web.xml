@@ -5,9 +5,7 @@
 	version="3.0">
 	<display-name>Quan ly building</display-name>
 	
-	<listener>
-        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
-    </listener>
+
 
 	<filter>
 		<filter-name>sitemesh</filter-name>

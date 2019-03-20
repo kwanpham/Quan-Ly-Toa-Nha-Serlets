@@ -1,10 +1,8 @@
 package com.quanlytoanha.dao.impl;
 
 import com.quanlytoanha.dao.IRoleDAO;
-import com.quanlytoanha.mapper.RoleMapper;
-import com.quanlytoanha.mapper.UserMapper;
 import com.quanlytoanha.model.RoleModel;
-import com.quanlytoanha.model.UserModel;
+
 
 import java.util.List;
 

@@ -1,10 +1,9 @@
 package com.quanlytoanha.dao.impl;
 
 import com.quanlytoanha.dao.GenericDAO;
-import com.quanlytoanha.mapper.RowMapper;
+
 import com.quanlytoanha.model.AbstractModel;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 
@@ -47,6 +46,7 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
+        long checkInsert = 0;
         try {
             long id = 0;
             connection = getConnection();
@@ -56,13 +56,14 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
             Object[] parameters = autoGetValueFromModel(model);
             setParameter(statement, parameters);
             System.out.println(statement.toString());
-            statement.executeUpdate();
+            checkInsert = statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 id = resultSet.getLong(1);
+                return id;
             }
             connection.commit();
-            return id;
+
         } catch (SQLException e) {
             e.printStackTrace();
             try {
@@ -76,7 +77,7 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
             closeAll(connection, statement, resultSet);
 
         }
-        return 0;
+        return checkInsert;
     }
 
     @Override
@@ -154,29 +155,7 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
         }
     }
 
-    @Override
-    public List<T> queryOld(String sql, RowMapper<T> rowMapper, Object... parameters) {
-        List<T> results = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = getConnection();
-            statement = connection.prepareStatement(sql);
-            this.setParameter(statement, parameters);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                results.add(rowMapper.mapRow(resultSet));
-            }
 
-            return results;
-        } catch (SQLException | NullPointerException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            closeAll(connection, statement, resultSet);
-        }
-    }
 
 
     public List<T> query(String sql, Class<T> tClass, Object... parameters) {
@@ -270,6 +249,9 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
         StringBuilder sql = new StringBuilder(" insert into " + tableName + " (  ");
         for (int i = 1; i < count; i++) {
 
+            if(listColumnName.get(i).equals("id"))
+                continue;
+
             if (i == count - 1) {
                 sql.append(listColumnName.get(i) + " , ");
                 sql.delete(sql.length() - 2, sql.length());
@@ -279,10 +261,14 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
             sql.append(listColumnName.get(i) + " , ");
         }
 
+
         sql.append(" values( ");
 
 
         for (int i = 1; i < count; i++) {
+
+            if(listColumnName.get(i).equals("id"))
+                continue;
 
             if (i == count - 1) {
                 sql.append("? ) ");
@@ -334,8 +320,9 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
 
         for (String colName : listColName) {
 
-            if (colName.equals("id"))
+            if (colName.equals("id")) {
                 continue;
+            }
 
             for (Field field : listField) {
                 if (colName.equals(field.getName())) {
@@ -354,7 +341,7 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
         return objects.toArray();
     }
 
-    private List<T> autoMappingModel(ResultSet rs, @NotNull Class<T> aClazz) {
+    private List<T> autoMappingModel(ResultSet rs, Class<T> aClazz) {
 
         List<T> results = new ArrayList<>();
 
@@ -399,39 +386,8 @@ public class AbsstractDAO<T extends AbstractModel> implements GenericDAO<T> {
 
     private void mapResultSetToModel(String colName, Field field, T model, ResultSet rs) throws SQLException, IllegalAccessException {
         field.setAccessible(true);
-        switch (field.getType().getTypeName()) {
-            case "int":
-                field.set(model, rs.getInt(colName));
-                break;
-            case "java.lang.Integer":
-                field.set(model, rs.getInt(colName));
-                break;
-            case "java.lang.Double":
-                field.set(model, rs.getDate(colName));
-                break;
-            case "double":
-                field.set(model, rs.getDouble(colName));
-                break;
-            case "java.lang.Long":
-                field.set(model, rs.getLong(colName));
-                break;
-            case "long":
-                field.set(model, rs.getLong(colName));
-                break;
-            case "java.lang.String":
-                field.set(model, rs.getString(colName));
-                break;
-            case "java.sql.Timestamp":
-                field.set(model, rs.getTimestamp(colName));
-                break;
-            default:
-                break;
-
-        }
-
+        field.set(model, rs.getObject(colName, field.getType()));
     }
 
-    //    public Class<Long> typeof(final long expr) {
-//        return Long.TYPE;
-//    }
+
 }

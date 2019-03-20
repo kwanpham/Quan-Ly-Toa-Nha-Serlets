@@ -66,7 +66,10 @@ public class BuildingController extends HttpServlet {
                 editBuilding(request , response);
                 break;
             case "search" :
-
+                break;
+            default:
+                showListBuilding(request, response);
+                break;
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(view);

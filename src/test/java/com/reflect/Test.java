@@ -1,13 +1,11 @@
 package com.reflect;
 
 import com.quanlytoanha.dao.impl.BuildingDAO;
-import com.quanlytoanha.mapper.RowMapper;
 import com.quanlytoanha.model.BuildingModel;
 import com.quanlytoanha.utils.SqlUtils;
 
 import java.lang.reflect.Field;
-import java.sql.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 

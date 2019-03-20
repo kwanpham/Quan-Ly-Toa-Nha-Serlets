@@ -1,6 +1,6 @@
 package com.quanlytoanha.dao;
 
-import com.quanlytoanha.mapper.RowMapper;
+
 import com.quanlytoanha.model.AbstractModel;
 
 import java.util.List;
@@ -8,8 +8,6 @@ import java.util.List;
 public interface GenericDAO<T extends AbstractModel> {
 
     List<T> query(String sql, Class<T> tClass , Object... parameters);
-
-    List<T> queryOld(String sql, RowMapper<T> rowMapper, Object... parameters);
 
     void update(String sql, T t);
 

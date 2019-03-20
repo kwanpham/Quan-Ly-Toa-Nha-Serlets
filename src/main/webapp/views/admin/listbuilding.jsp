@@ -5,6 +5,7 @@
 <head>
     <title>Danh sách tòa nhà</title>
 
+
 </head>
 <body>
 <div class="main-content">
@@ -131,17 +132,19 @@
                                 <select class="form-control">
                                     <option value="" selected>---Chọn nhân viên phụ trách---</option>
                                     <c:forEach var="item" items="${EMPLOYEES}">
-                                        <<option value="${item.id}">${item.fullName}</option>
+                                        <option value="${item.id}">${item.fullName}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <c:forEach var="type" items="${buildingTypes}">
                             <div class="col-xs-1 col-sm-1 col-md-1" style="width: 12.499999995%">
                                 <div class="form-group">
-                                    <input type="checkbox" class="form-check-input" name="buildingTypes" value="${type.key}">
+                                    <input type="checkbox" class="form-check-input" name="buildingTypes"
+                                           value="${type.key}">
                                     <label> ${type.value}</label>
                                 </div>
                             </div>
@@ -174,7 +177,8 @@
                                         </a>
                                         <button id="btnDelete" type="button"
                                                 class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-                                                data-toggle="tooltip" title='Xóa tòa nhà'>
+                                                data-toggle="tooltip" title='Xóa tòa nhà'
+                                                disabled>
 																<span>
 																	<i class="fa fa-trash-o bigger-110 pink"></i>
 																</span>
@@ -183,13 +187,14 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th><input type="checkbox" id="deletelAll"></th>
+                                            <th><input type="checkbox" id="checkAll"></th>
                                             <th>Ngày</th>
                                             <th>Tên sản phẩm</th>
                                             <th>Địa chỉ</th>
@@ -204,10 +209,10 @@
                                         </tr>
                                         </thead>
 
-                                        <tbody>
+                                        <tbody id="tbBuilding">
                                         <c:forEach var="item" items="${model.listResult}">
                                             <tr>
-                                                <td><input type="checkbox" class="check-box-element"
+                                                <td><input type="checkbox" class="check-action check-box-element"
                                                            id="checkbox_${item.id}" value="${item.id}"/></td>
                                                 <td><fmt:formatDate value="${item.createdDate}"
                                                                     pattern="MM/dd/yyyy"/></td>
@@ -232,7 +237,9 @@
 
                                                     <button type="button" class="btn btn-sm btn-primary"
                                                             data-toggle="modal"
-                                                            data-target="#myModal" value="${item.id}">
+                                                            value="${item.id}"
+                                                            data-id="${item.id}"
+                                                            onclick="openModalAssignBuilding(this)">
                                                         <span class="glyphicon glyphicon-user"></span>
                                                     </button>
                                                 </td>
@@ -243,7 +250,7 @@
 
 
                                     <!-- The Modal -->
-                                    <div class="modal fade" id="myModal">
+                                    <div class="modal fade" id="myModal" role="dialog">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
 
@@ -265,22 +272,20 @@
                                                             <th>Tên nhân viên</th>
                                                         </tr>
                                                         </thead>
-                                                        <tbody>
-                                                        <tr>
+                                                        <tbody id="userAssignTable">
 
-                                                            <c:forEach var="item2" items="${model2.listResult}">
-                                                            <td><input class="form-check-input" type="checkbox"></td>
-
-                                                            <td>${item.name}</td>
-
-                                                            </c:forEach>
                                                         </tbody>
                                                     </table>
                                                 </div>
 
                                                 <!-- Modal footer -->
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger"
+                                                    <button type="button" class="col-6 btn btn-danger"
+                                                            data-dismiss="modal" id-data="" id="btnAssingUser"
+                                                            onclick="assignUser(this)">
+                                                        Phân công
+                                                    </button>
+                                                    <button type="button" class="col-6 btn btn-danger"
                                                             data-dismiss="modal">Đóng
                                                     </button>
                                                 </div>
@@ -309,9 +314,42 @@
     </form>
     <%--end form--%>
 </div>
-
 <!-- /.main-content -->
+
+
 <script>
+
+
+    $(document).ready(function () {
+        enableOrDisableDeleteAll();
+        autoCheckBoxAllChild();
+        autoCheckBoxParent();
+
+        $('#btnDelete').click(e => {
+            confirm("Bạn có muốn xóa không ! ");
+            let dataArray = $('tbody[id=tbBuilding] input[type=checkbox]:checked').map(function () {
+                return $(this).val();
+            }).get();
+            let data = {};
+            data['ids'] = dataArray;
+
+            $.ajax({
+                url: '/api-admin-building',
+                type: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (res) {
+                    window.location.href = "<c:url value='/admin-building?ref=list&page=1&sortName=name&sortBy=desc'/>";
+                },
+                error: function (res) {
+                    console.log(res);
+                    window.location.href = "<c:url value='/admin-building?ref=list&page=1&sortName=name&sortBy=desc'/>";
+                }
+            });
+        });
+
+
+    });
 
     // phân trnag
     var totalPages = ${model.totalPage};
@@ -334,6 +372,102 @@
             }
         });
     });
+
+    // mở modal và load list user
+    function openModalAssignBuilding(e) {
+        $('#myModal').modal();
+        let buildingId = e.getAttribute("data-id");
+        loadUserAssignForBuilding(buildingId);
+    };
+
+    function loadUserAssignForBuilding(buildingId) {
+        $('#btnAssingUser').attr('id-data', buildingId);
+        $.ajax({
+            url: '/api-admin-user?roleId=2&buildingId=' + buildingId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (result) {
+                let row = '';
+                $.each(result, function (index, user) {
+                    row += '<tr>';
+                    row += '<td class="text-center"><input type="checkbox" name="checkList" value=' + user.id + ' id="checkbox_' + user.id + '" class="check-box-element" ' + user.checked + '/></td>';
+                    row += '<td class="text-center">' + user.fullName + '</td>';
+                    row += '</tr>';
+                });
+                $('#userAssignTable').html(row);
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+    };
+
+    function assignUser(e) {
+        let data = {} ;
+        let userIds = [];
+        data['buildingId'] = e.getAttribute('id-data');
+        $("input[name=checkList]:checked").each(function () {
+            userIds.push($(this).val());
+        });
+        data['userIds'] = userIds;
+
+        $.ajax({
+            url : '/api-admin-assignment',
+            type : 'POST' ,
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+    };
+
+
+    function enableOrDisableDeleteAll() {
+        $('tbody[id=tbBuilding] input[type=checkbox]').click(function () {
+            if ($('tbody[id=tbBuilding] input[type=checkbox]:checked').length > 0) {
+                $('#btnDelete').prop('disabled', false);
+            } else {
+                $('#btnDelete').prop('disabled', true);
+            }
+        })
+    };
+
+    function autoCheckBoxAllChild() {
+        $('#checkAll').change(function (e) {
+
+            if ($(this).prop('checked')) {
+                $(this).closest('table').find('tbody input[type=checkbox]').prop('checked', true);
+                $('#btnDelete').prop('disabled', false);
+            } else {
+                $(this).closest('table').find('tbody input[type=checkbox]').prop('checked', false);
+                $('btnDelete').prop('disabled', true);
+
+            }
+        })
+    };
+
+    function autoCheckBoxParent() {
+        let toltalCheckBoxChild = $('tbody[id=tbBuilding] input[type=checkbox]').length;
+
+        $('tbody[id=tbBuilding] input[type=checkbox]').each(function () {
+            $(this).change(function () {
+                let totalCheckBoxChecked = $('tbody[id=tbBuilding] input[type=checkbox]:checked').length;
+                console.log(totalCheckBoxChecked);
+                if (totalCheckBoxChecked == toltalCheckBoxChild) {
+                    $('#checkAll').prop('checked', true);
+                } else {
+                    $('#checkAll').prop('checked', false);
+                }
+            });
+        });
+    };
+
 
     $('#btnSearch').click(function () {
         $('#maxPageItem').val(limit);

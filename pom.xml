@@ -52,12 +52,6 @@
             <version>${mysql.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.jboss.weld.servlet</groupId>
-            <artifactId>weld-servlet</artifactId>
-            <version>${weld.servlet.version}</version>
-        </dependency>
-
         <!-- json -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
