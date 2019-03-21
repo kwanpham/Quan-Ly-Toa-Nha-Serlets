@@ -115,31 +115,65 @@
 
         <div id="RentAreaForm">
 
-            <div class="form-group" id="rentArea">
-                <label class="col-sm-1 control-label no-padding-right">Diện tích thuê</label>
-                <div class="col-sm-11">
-                    <input type="text" class="form-control" name="rentArea" value="${model.rentArea}"/>
+            <c:if test="${empty rentArea}">
+                <div class="form-group" id="rentArea">
+                    <label class="col-sm-1 control-label no-padding-right">Diện tích thuê</label>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" name="rentArea" value="${model.rentArea}"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group" id="areaDescription">
-                <label class="col-sm-1 control-label no-padding-right">Mô tả S</label>
-                <div class="col-sm-11">
-                    <input type="text" class="form-control" name="areaDescription"
-                           value="${model.areaDescription}"/>
+                <div class="form-group" id="areaDescription">
+                    <label class="col-sm-1 control-label no-padding-right">Mô tả S</label>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" name="areaDescription"
+                               value="${model.areaDescription}"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group" id="line">
-                <div class="col-sm-12">
-                    <hr size="5" color="blue">
+                <div class="form-group" id="line">
+                    <div class="col-sm-12">
+                        <hr size="5" color="blue">
+                    </div>
                 </div>
-            </div>
+
+            </c:if>
+            
+            <c:if test="${not empty rentArea}">
+                <c:forEach var="item" items="${rentArea}">
+                    <div class="form-group" id="rentArea">
+                        <label class="col-sm-1 control-label no-padding-right">Diện tích thuê</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control" name="rentArea" value="${item.rentArea}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="areaDescription">
+                        <label class="col-sm-1 control-label no-padding-right">Mô tả S</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control" name="areaDescription"
+                                   value="${item.areaDescription}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="line">
+                        <div class="col-sm-12">
+                            <hr size="5" color="blue">
+                        </div>
+                    </div>
+
+                </c:forEach>
+
+            </c:if>
+            
+
 
         </div>
 
 
         <button type="button" id="btnAddRentArea" class="btn btn-primary">Thêm diện tích thuê</button>
+
+        <hr size="5" color="blue">
 
 
         <div class="form-group">

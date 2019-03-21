@@ -6,9 +6,11 @@ import com.quanlytoanha.paging.PageRequest;
 import com.quanlytoanha.paging.Pageble;
 import com.quanlytoanha.service.IBuildingService;
 import com.quanlytoanha.service.IDistrictService;
+import com.quanlytoanha.service.IRentAreaService;
 import com.quanlytoanha.service.IUserService;
 import com.quanlytoanha.service.impl.BuildingService;
 import com.quanlytoanha.service.impl.DistrictService;
+import com.quanlytoanha.service.impl.RentAreaService;
 import com.quanlytoanha.service.impl.UserService;
 import com.quanlytoanha.sort.Sorter;
 import com.quanlytoanha.utils.FormUtil;
@@ -31,6 +33,7 @@ public class BuildingController extends HttpServlet {
     private String view = "";
 
     private IBuildingService buildingService;
+    private IRentAreaService rentAreaService;
     private IUserService userService;
     private IDistrictService districtService;
 
@@ -41,6 +44,7 @@ public class BuildingController extends HttpServlet {
         buildingService = new BuildingService();
         userService = new UserService();
         districtService = new DistrictService();
+        rentAreaService = new RentAreaService();
     }
 
 
@@ -108,6 +112,7 @@ public class BuildingController extends HttpServlet {
         request.setAttribute("buildingTypes" , buildingService.getBuildTypes());
         request.setAttribute("districts" , districtService.findAll());
         request.setAttribute(SystemConstant.MODEL , buildingService.findOne(model.getId()));
+        request.setAttribute("rentArea" , rentAreaService.findByBuildingId(model.getId()));
         view = "views/admin/addbuilding.jsp";
     }
 

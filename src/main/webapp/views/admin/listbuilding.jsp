@@ -321,8 +321,14 @@
 
 
     $(document).ready(function () {
+
+        // check nút delete bật hay tắt
         enableOrDisableDeleteAll();
+
+        // xử lý nút delete all
         autoCheckBoxAllChild();
+
+        // xử lý delete all khi ấn các nút delete com
         autoCheckBoxParent();
 
         $('#btnDelete').click(e => {
@@ -459,7 +465,7 @@
             $(this).change(function () {
                 let totalCheckBoxChecked = $('tbody[id=tbBuilding] input[type=checkbox]:checked').length;
                 console.log(totalCheckBoxChecked);
-                if (totalCheckBoxChecked == toltalCheckBoxChild) {
+                if (totalCheckBoxChecked === toltalCheckBoxChild) {
                     $('#checkAll').prop('checked', true);
                 } else {
                     $('#checkAll').prop('checked', false);
